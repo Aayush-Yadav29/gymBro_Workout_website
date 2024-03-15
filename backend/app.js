@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const Workout = require('./models/Workout');
 const PastWorkout = require('./models/PastWorkouts');
 const { ObjectId } = require('mongodb');
-// const Blog = require('./models/Blog');
+const userRoutes = require('./routes/user')
+
+
 require('dotenv').config()
 
 app.use(express.json()); // Middleware to parse JSON data
@@ -16,6 +18,9 @@ mongoose.connect(process.env.mongoDbURL)
 app.get('/',(req,res)=>{
     res.send("Hi there!")
 })
+
+// routes for authentcation
+app.use('/api/user', userRoutes)
 
 // route to save a workout template
 app.post('/api/addWorkout', async (req, res) => {
