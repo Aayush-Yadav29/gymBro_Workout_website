@@ -5,9 +5,16 @@ const Workout = require('./models/Workout');
 const PastWorkout = require('./models/PastWorkouts');
 const { ObjectId } = require('mongodb');
 const userRoutes = require('./routes/user')
-
+const cors = require('cors');
 
 require('dotenv').config()
+app.use(cors());
+
+// Or enable CORS for specific origins
+const allowedOrigins = ['http://localhost:3000'];
+app.use(cors({
+  origin: allowedOrigins
+}));
 
 app.use(express.json()); // Middleware to parse JSON data
 mongoose.connect(process.env.mongoDbURL)

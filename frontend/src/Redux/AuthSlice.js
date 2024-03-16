@@ -80,12 +80,27 @@ const authSlice = createSlice({
       })
       .addCase(signUpUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        // Handle the response data from the API
         let responseData = action.payload;
-        // Update the state with the relevant data from the response
-        state.user = responseData.user;
-        state.token = responseData.token;
-        // Or any other relevant properties
+        console.log(responseData);
+        state.isLoading = false;
+        if(responseData.error){
+          state.error = responseData.error;
+        }
+
+        else{
+          // console.log("msg : ",responseData.msg);
+          // console.log("token : ",responseData.token);
+          // console.log("user : ",responseData.email);
+          
+          state.msg = responseData.msg;
+          state.token = responseData.token;
+          state.user = responseData.user;
+
+          localStorage.setItem('msg',state.msg);
+          localStorage.setItem('user',JSON.stringify(state.user));
+          localStorage.setItem('msg',state.token);
+          
+        }
       })
       .addCase(signUpUser.rejected, (state, action) => {
         state.isLoading = false;

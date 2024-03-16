@@ -48,8 +48,18 @@ const signupUser = async (req, res) => {
 
     // create a token
     const token = createToken(user._id)
-
-    res.status(200).json({ email, token })
+    if(user == 'All fields must be filled'){
+        let msg = 'All fields must be filled'
+        res.json({msg})
+      }
+      else if(user == 'Email already in use'){
+        let msg = 'Email already in use'
+        res.json({msg})
+      }
+      else{
+          let msg = 'valid'
+          res.status(200).json({msg,email, token})
+      }
   } catch (error) {
     console.log("error");
     res.status(400).json({ error: error.message })

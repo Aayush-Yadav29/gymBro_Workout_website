@@ -5,27 +5,33 @@ import Navbar from './Navbar';
 import CreateWorkout from './CreateWorkout';
 import { TodayWorkout } from './TodayWorkout';
 import CarouselWorkout from './CarouselWorkout';
+import SignUp from './Authentication/SignUp';
+import Login from './Authentication/Login';
 
 function App() {
   return (
     <Router>
       <div className="App">
-        <Navbar/>
+        <Navbar />
         <Switch>
-          <Route exact path = "/">
-            <Home/>
+          <Route exact path="/">
+            <SignUp/>
           </Route>
-          <Route exact path = "/Home">
-            <Home/>
+          <Route exact path="/Login">
+            <Login/>
           </Route>
-          <Route exact path = "/CreateWorkout">
-            <CreateWorkout/>
+          <Route exact path="/Home">
+            <Home />
+          </Route>
+          
+          <Route exact path="/CreateWorkout">
+            <CreateWorkout />
           </Route>
           <Route exact path="/Home/:id">
-            <TodayWorkout/>
+            <TodayWorkout />
           </Route>
           <Route exact path="/Home/TodayWorkout/:id">
-            <CarouselWorkout/>
+            <CarouselWorkout />
           </Route>
         </Switch>
 
