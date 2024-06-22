@@ -11,15 +11,16 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
+import { Link ,useHistory} from 'react-router-dom';
 
 
-const pages = ['Home', 'Create Workout', 'Blog'];
+const pages = ['Home', 'Create Workout', 'Past Workouts'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const history = useHistory();
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -35,6 +36,16 @@ function ResponsiveAppBar() {
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
+    };
+
+    const handleLogOut = () => {
+        // Handle the click event here
+        console.log("Logut clicked!");
+        // Remove an item from local storage
+        localStorage.clear();
+
+        history.push('/Login');
+
     };
 
     return (
@@ -152,9 +163,13 @@ function ResponsiveAppBar() {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
-                                </MenuItem>
+                               <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                               {setting === 'Logout' && (
+                                   <Typography textAlign="center" onClick={handleLogOut}>
+                                       {setting}
+                                   </Typography>
+                               )}
+                           </MenuItem>
                             ))}
                         </Menu>
                     </Box>

@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
+const tk = localStorage.getItem('token');
 const initialState = {
   msg: "",
   user: "",
-  token: "",
+  token: tk | "",
   isLoading: false,
   error: ""
 };
@@ -96,9 +96,9 @@ const authSlice = createSlice({
           state.token = responseData.token;
           state.user = responseData.user;
 
-          localStorage.setItem('msg',state.msg);
-          localStorage.setItem('user',JSON.stringify(state.user));
-          localStorage.setItem('msg',state.token);
+          localStorage.setItem('token',state.token);
+          // localStorage.setItem('user',JSON.stringify(state.user));
+          // localStorage.setItem('token',state.token);
           
         }
       })
@@ -130,9 +130,9 @@ const authSlice = createSlice({
           state.token = responseData.token;
           state.user = responseData.user;
 
-          localStorage.setItem('msg',state.msg);
-          localStorage.setItem('user',JSON.stringify(state.user));
-          localStorage.setItem('msg',state.token);
+          localStorage.setItem('token',state.token);
+          // localStorage.setItem('user',JSON.stringify(state.user));
+          // localStorage.setItem('token',state.token);
           
         }
         
