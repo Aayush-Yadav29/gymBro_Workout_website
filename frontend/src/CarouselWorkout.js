@@ -4,14 +4,15 @@ import { Button, Card, CardContent, CardMedia, Typography } from '@mui/material'
 import CardDisplay from './CardDisplay';
 import TextField from '@mui/material/TextField';
 import { Alert } from '@mui/material';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 export default function CarouselWorkout() {
-    const history = useHistory();
+    const navigate = useNavigate();
+    const token = localStorage.getItem('token');
     const [showNotification, setShowNotification] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
     const { id } = useParams();
-    // console.log(id);
+    console.log(id);
     const [exercises, setExercises] = useState([]);
     const [newArray, setnewArray] = useState([]);
     const [check, setcheck] = useState(false);
@@ -86,12 +87,13 @@ export default function CarouselWorkout() {
                 i+=1;
             })
             const todayDate = new Date();
-            const data = {date: String(todayDate),workoutData: workoutData}
+            const data = {date: String(todayDate),title: exercises.title ,workoutData: workoutData}
             console.log(data);
             fetch('/api/addPastWorkout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': token
                 },
                 body: JSON.stringify(data),
                 // console.log(body);
@@ -108,8 +110,8 @@ export default function CarouselWorkout() {
             setShowNotification(true);
             setTimeout(function() {
                 setShowNotification(false);
-                history.push('/');
-            }, 5000);
+                navigate('/Home');
+            }, 3000);
             
             // setShowNotification(true); // Set showNotification to true after successful submission
         }
@@ -121,7 +123,11 @@ export default function CarouselWorkout() {
         const fetchData = async () => {
             try {
                 console.log("making req");
-                const response = await fetch(`/api/getWorkouts/${id}`);
+                const response = await fetch(`/api/getWorkouts/${id}`,{
+                    headers: {
+                      'Authorization': token
+                    }
+                  });
                 console.log("req made");
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -190,7 +196,7 @@ export default function CarouselWorkout() {
                     
                     <Alert severity="success" onClose={() => {
                         setShowNotification(false);
-                        history.push('/');
+                        navigate('/Home');
                         }}>
                         Congrats, your workout for today is completed and saved. See you Tomorrow !!
                     </Alert>

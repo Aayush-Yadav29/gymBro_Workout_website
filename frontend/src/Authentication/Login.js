@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Link, Container, Avatar, Alert } from '@mui/material';
 import { loginUser } from '../Redux/AuthSlice';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 const Login = () => {
@@ -12,7 +12,7 @@ const Login = () => {
   const [incorrectEmail, setIncorrectEmail] = useState(false);
   const [incompleteData, setIncompleteData] = useState(false);
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -47,7 +47,9 @@ const Login = () => {
             setIncorrectEmail(true);
           }
           else if(msg == 'valid'){
-            history.push('/Home');
+            console.log("valid login");
+            navigate('/Home');
+            window.location.reload();
           }
         }
       })

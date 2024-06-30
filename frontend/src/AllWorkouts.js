@@ -3,11 +3,16 @@ import NewAccordion from './NewAccordian';
 
 function NestedList() {
   const [allWorkouts, setallWorkouts] = React.useState([]);
-
+  const token = localStorage.getItem('token');
+  console.log(token);
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/getWorkouts');
+        const response = await fetch('/api/getWorkouts',{
+          headers: {
+            'Authorization': token
+          }
+        });
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

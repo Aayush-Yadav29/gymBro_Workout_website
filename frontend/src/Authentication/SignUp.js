@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Link, Container, Avatar, Alert } from '@mui/material';
 import { signUpUser } from '../Redux/AuthSlice';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 const SignUp = () => {
@@ -11,7 +11,7 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const [usedEmail, setusedEmail] = useState(false);
   const [incompleteData, setIncompleteData] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
   
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -42,7 +42,7 @@ const SignUp = () => {
             setusedEmail(true);
           }
           else if(msg == 'valid'){
-            history.push('/Home');
+            navigate('/Home');
           } 
         }
       })

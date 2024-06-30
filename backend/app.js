@@ -6,6 +6,7 @@ const PastWorkout = require('./models/PastWorkouts');
 const { ObjectId } = require('mongodb');
 const userRoutes = require('./routes/user')
 const cors = require('cors');
+const verifyToken = require('./middlewares/verifyToken');
 
 require('dotenv').config()
 app.use(cors());
@@ -22,22 +23,24 @@ mongoose.connect(process.env.mongoDbURL)
         app.listen(process.env.PORT, () =>{console.log("server running")})
 })
 
-app.get('/',(req,res)=>{
-    res.send("Hi there!")
-})
+
+
 
 // routes for authentcation
 app.use('/api/user', userRoutes)
 
+// Routes that require authentication
 // route to save a workout template
-app.post('/api/addWorkout', async (req, res) => {
+app.post('/api/addWorkout', verifyToken,async (req, res) => {
   try {
     // Extract data from the request body
     const { title, blocks } = req.body;
-
+    const user_id = req.user._id;
+    // console.log("user id: ",req.user);
     // Create a new instance of the Workout model
     const workout = new Workout({
       title,
+      user_id,
       exerciseData : blocks,
     });
 
@@ -53,17 +56,19 @@ app.post('/api/addWorkout', async (req, res) => {
 });
 
 // route to save a workout after completing it
-app.post('/api/addPastWorkout', async (req, res) => {
+app.post('/api/addPastWorkout', verifyToken,async (req, res) => {
 
   try {
     // Extract data from the request body
     // console.log(req.body);
-    const { date, workoutData } = req.body;
-
+    const { date, title,workoutData } = req.body;
+    const user_id = req.user._id;
     // Create a new instance of the Workout model
     const workout = new PastWorkout({
       date,
+      title,
       workoutData,
+      user_id
     });
 
     // Save the workout to the database
@@ -78,8 +83,22 @@ app.post('/api/addPastWorkout', async (req, res) => {
 });
 
 // route to send all workouts via api
-app.get('/api/getWorkouts', (req, res) => {
-  Workout.find()
+app.get('/api/getWorkouts',verifyToken,(req, res) => {
+  const user_id = req.user._id;
+  Workout.find({user_id})
+    .then(result => {
+      res.send(result);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+});
+
+// route to send all past workouts via api
+app.get('/api/getPastWorkout',verifyToken,(req, res) => {
+  const user_id = req.user._id;
+  PastWorkout.find({user_id})
+    .sort({ createdAt: -1 })  // Sort by createdAt field in descending order
     .then(result => {
       res.send(result);
     })
@@ -89,7 +108,7 @@ app.get('/api/getWorkouts', (req, res) => {
 });
 
 // route to delete a workout
-app.post('/api/deleteWorkout', async (req, res) => {
+app.post('/api/deleteWorkout', verifyToken,async (req, res) => {
   console.log(req.body);
   try {
     const workoutId = req.body.id;
@@ -110,7 +129,7 @@ app.post('/api/deleteWorkout', async (req, res) => {
 });
 
 //route to get details of a particular workoute
-app.get('/api/getWorkouts/:id', (req,res)=>{
+app.get('/api/getWorkouts/:id', verifyToken,(req,res)=>{
   const id = req.params.id;
   console.log("req here : ",id);
   Workout.findById(id)
@@ -122,7 +141,7 @@ app.get('/api/getWorkouts/:id', (req,res)=>{
   });
 });
 
-app.get('/api/getTodayWorkouts/:id', (req,res)=>{
+app.get('/api/getTodayWorkouts/:id',verifyToken,(req,res)=>{
   const id = req.params.id;
   console.log("req new : ",id);
   Workout.findById(id)

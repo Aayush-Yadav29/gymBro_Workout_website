@@ -10,6 +10,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 const exercises = require('./data');
 
 export default function CreateWorkout() {
+  const token = localStorage.getItem('token');
   const [title, settitle] = useState('');
   const [formFields, setFormFields] = useState([{ exercise: null, sets: '', reps: '' }]);
   const handleAddExercise = () => {
@@ -44,6 +45,7 @@ export default function CreateWorkout() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': token
         },
         body: JSON.stringify(formData),
         // console.log(body);

@@ -12,12 +12,14 @@ import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import { Link } from "react-router-dom";
 export default function NewAccordion({ title, exerciseList, id }) {
+    const token = localStorage.getItem('token');
     const handleDelete = () => {
         console.log(id);
         fetch('/api/deleteWorkout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': token
             },
             body: JSON.stringify({id}),
             // console.log(body);

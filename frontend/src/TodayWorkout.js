@@ -11,13 +11,18 @@ import Button from '@mui/material/Button';
 
 export const TodayWorkout = () => {
     const { id } = useParams();
+    const token = localStorage.getItem('token');
     const [exercises, setExercises] = useState([]);
     const newArray = exercises.exerciseData || []; // Initialize newArray as an empty array if exerciseData is undefined
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`/api/getWorkouts/${id}`);
+                const response = await fetch(`/api/getWorkouts/${id}`,{
+                    headers: {
+                      'Authorization': token
+                    }
+                  });
 
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

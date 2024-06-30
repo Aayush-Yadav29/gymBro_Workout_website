@@ -11,7 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link ,useHistory} from 'react-router-dom';
+import { Link ,useNavigate} from 'react-router-dom';
 
 
 const pages = ['Home', 'Create Workout', 'Past Workouts'];
@@ -20,8 +20,7 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-    const history = useHistory();
-
+    const navigate = useNavigate();
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -44,7 +43,8 @@ function ResponsiveAppBar() {
         // Remove an item from local storage
         localStorage.clear();
 
-        history.push('/Login');
+        navigate('/Login');
+        window.location.reload();
 
     };
 
