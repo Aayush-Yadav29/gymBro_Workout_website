@@ -5,6 +5,10 @@ const pastworkoutSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  title: {
+    type: String,
+    required: true,
+  },
   workoutData: [
     {
       exercise: {
@@ -25,6 +29,10 @@ const pastworkoutSchema = new mongoose.Schema({
       }
     },
   ],
+  user_id : {
+    type : String,
+    required: true,
+  }
 }, {
   timestamps: true, // This will automatically add createdAt and updatedAt fields
 });
