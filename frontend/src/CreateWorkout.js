@@ -8,7 +8,7 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
 const exercises = require('./data');
-
+const baseUrl = require('./env');
 export default function CreateWorkout() {
   const token = localStorage.getItem('token');
   const [title, settitle] = useState('');
@@ -41,7 +41,7 @@ export default function CreateWorkout() {
     };
     console.log(outputList);
       
-      fetch('/api/addWorkout', {
+      fetch(`${baseUrl}/api/addWorkout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

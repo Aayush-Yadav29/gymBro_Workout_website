@@ -7,10 +7,10 @@ const initialState = {
   isLoading: false,
   error: ""
 };
-
+const baseUrl = require('../env');
 export const signUpUser = createAsyncThunk('signupUser', async (body, thunkAPI) => {
     try {
-      const res = await fetch("http://localhost:4000/api/user/signup", {
+      const res = await fetch(`${baseUrl}/api/user/signup`, {
         method: "post",
         headers: {
           'Content-Type': "application/json"
@@ -34,7 +34,7 @@ export const signUpUser = createAsyncThunk('signupUser', async (body, thunkAPI) 
 
   export const loginUser = createAsyncThunk('loginUser', async (body, thunkAPI) => {
     try {
-      const res = await fetch("http://localhost:4000/api/user/login", {
+      const res = await fetch(`${baseUrl}/api/user/login`, {
         method: "post",
         headers: {
           'Content-Type': "application/json"

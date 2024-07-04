@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-
+const baseUrl = require('./env');
 export const TodayWorkout = () => {
     const { id } = useParams();
     const token = localStorage.getItem('token');
@@ -18,7 +18,7 @@ export const TodayWorkout = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch(`/api/getWorkouts/${id}`,{
+                const response = await fetch(`${baseUrl}/api/getWorkouts/${id}`,{
                     headers: {
                       'Authorization': token
                     }

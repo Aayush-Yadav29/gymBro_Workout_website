@@ -14,6 +14,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+const baseUrl = require('./env');
 export const PastWorkouts = () => {
   function formatDate(dateString) {
     // Parse the ISO date string into a Date object
@@ -33,7 +34,6 @@ export const PastWorkouts = () => {
     // Format the date as "day month year"
     return `${day} ${month} ${year}`;
   }
-
   const [expanded, setExpanded] = React.useState(false);
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -45,7 +45,7 @@ export const PastWorkouts = () => {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/getPastWorkout', {
+        const response = await fetch(`${baseUrl}/api/getPastWorkout`, {
           headers: {
             'Authorization': token
           }

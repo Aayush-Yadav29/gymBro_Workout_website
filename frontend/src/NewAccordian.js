@@ -11,11 +11,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import { Link } from "react-router-dom";
+const baseUrl = require('./env');
 export default function NewAccordion({ title, exerciseList, id }) {
     const token = localStorage.getItem('token');
     const handleDelete = () => {
         console.log(id);
-        fetch('/api/deleteWorkout', {
+        fetch(`${baseUrl}/api/deleteWorkout`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

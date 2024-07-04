@@ -1,6 +1,6 @@
 import * as React from 'react';
 import NewAccordion from './NewAccordian';
-
+const baseUrl = require('./env');
 function NestedList() {
   const [allWorkouts, setallWorkouts] = React.useState([]);
   const token = localStorage.getItem('token');
@@ -8,8 +8,8 @@ function NestedList() {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/getWorkouts',{
-          headers: {
+        const response = await fetch(`${baseUrl}/api/getWorkouts`,{
+          headers: {  
             'Authorization': token
           }
         });

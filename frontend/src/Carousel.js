@@ -4,7 +4,7 @@ import React, { useState ,useEffect} from 'react';
 import { useParams,Link} from 'react-router-dom';
 import { Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import CardDisplay from './CardDisplay';
-
+const baseUrl = require('./env');
 const Carousel = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const { id } = useParams();
@@ -18,7 +18,7 @@ const Carousel = () => {
         const fetchData = async () => {
             try {
                 console.log("making req");
-                const response = await fetch(`/api/getWorkouts/${id}`);
+                const response = await fetch(`${baseUrl}/api/getWorkouts/${id}`);
                 console.log("req made");
                 if (!response.ok) {
                     throw new Error('Network response was not ok');

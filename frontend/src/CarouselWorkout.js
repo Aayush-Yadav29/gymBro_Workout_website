@@ -5,7 +5,7 @@ import CardDisplay from './CardDisplay';
 import TextField from '@mui/material/TextField';
 import { Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-
+const baseUrl = require('./env');
 export default function CarouselWorkout() {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
@@ -89,7 +89,7 @@ export default function CarouselWorkout() {
             const todayDate = new Date();
             const data = {date: String(todayDate),title: exercises.title ,workoutData: workoutData}
             console.log(data);
-            fetch('/api/addPastWorkout', {
+            fetch(`${baseUrl}/api/addPastWorkout`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -123,7 +123,7 @@ export default function CarouselWorkout() {
         const fetchData = async () => {
             try {
                 console.log("making req");
-                const response = await fetch(`/api/getWorkouts/${id}`,{
+                const response = await fetch(`${baseUrl}/api/getWorkouts/${id}`,{
                     headers: {
                       'Authorization': token
                     }
