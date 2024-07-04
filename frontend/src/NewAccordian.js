@@ -11,8 +11,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import { Link } from "react-router-dom";
-const baseUrl = require('./env');
 export default function NewAccordion({ title, exerciseList, id }) {
+    const baseUrl = process.env.REACT_APP_BASE_URL;
     const token = localStorage.getItem('token');
     const handleDelete = () => {
         console.log(id);

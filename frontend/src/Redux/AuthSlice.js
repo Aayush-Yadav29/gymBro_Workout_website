@@ -7,7 +7,7 @@ const initialState = {
   isLoading: false,
   error: ""
 };
-const baseUrl = require('../env');
+const baseUrl = process.env.REACT_APP_BASE_URL;
 export const signUpUser = createAsyncThunk('signupUser', async (body, thunkAPI) => {
     try {
       const res = await fetch(`${baseUrl}/api/user/signup`, {

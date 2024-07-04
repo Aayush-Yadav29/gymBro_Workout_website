@@ -4,8 +4,8 @@ import React, { useState ,useEffect} from 'react';
 import { useParams,Link} from 'react-router-dom';
 import { Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import CardDisplay from './CardDisplay';
-const baseUrl = require('./env');
 const Carousel = () => {
+    const baseUrl = process.env.REACT_APP_BASE_URL;
     const [currentSlide, setCurrentSlide] = useState(0);
     const { id } = useParams();
     const [exercises, setExercises] = useState([]);

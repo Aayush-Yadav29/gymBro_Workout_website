@@ -8,8 +8,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-const baseUrl = require('./env');
 export const TodayWorkout = () => {
+    const baseUrl = process.env.REACT_APP_BASE_URL;
     const { id } = useParams();
     const token = localStorage.getItem('token');
     const [exercises, setExercises] = useState([]);

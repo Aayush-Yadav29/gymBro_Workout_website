@@ -5,8 +5,8 @@ import CardDisplay from './CardDisplay';
 import TextField from '@mui/material/TextField';
 import { Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-const baseUrl = require('./env');
 export default function CarouselWorkout() {
+    const baseUrl = process.env.REACT_APP_BASE_URL;
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
     const [showNotification, setShowNotification] = useState(false);

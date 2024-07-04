@@ -1,7 +1,8 @@
 import * as React from 'react';
 import NewAccordion from './NewAccordian';
-const baseUrl = require('./env');
 function NestedList() {
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  // console.log("baseurl : ",baseUrl);
   const [allWorkouts, setallWorkouts] = React.useState([]);
   const token = localStorage.getItem('token');
   console.log(token);
