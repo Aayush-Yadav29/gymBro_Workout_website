@@ -1,0 +1,41 @@
+/* NestedList.css */
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #1dbf73, #00a6fb);
+    color: #fff;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .header {
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #fff;
+  }
+  
+  .workouts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .error-message {
+    color: #ff4d4d;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+  
