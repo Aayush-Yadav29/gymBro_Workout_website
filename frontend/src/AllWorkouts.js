@@ -2,10 +2,10 @@ import * as React from 'react';
 import NewAccordion from './NewAccordian';
 function NestedList() {
   const baseUrl = process.env.REACT_APP_BASE_URL;
-  // console.log("baseurl : ",baseUrl);
+  console.log("baseurl : ",baseUrl);
   const [allWorkouts, setallWorkouts] = React.useState([]);
   const token = localStorage.getItem('token');
-  console.log(token);
+  // console.log(typeof token);
   React.useEffect(() => {
     const fetchData = async () => {
       try {

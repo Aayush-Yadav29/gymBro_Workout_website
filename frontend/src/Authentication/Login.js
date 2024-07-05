@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Link, Container, Avatar, Alert } from '@mui/material';
 import { loginUser } from '../Redux/AuthSlice';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 const Login = () => {
@@ -120,7 +120,7 @@ const Login = () => {
             Log In
           </Button>
           <Typography variant="body2" color="text.secondary" align="center">
-            Don't have an account? <Link href="/" variant="body2">Sign Up here</Link>
+            Don't have an account? <NavLink to="/" variant="body2">Sign Up here</NavLink>
           </Typography>
         </Box>
       </Box>

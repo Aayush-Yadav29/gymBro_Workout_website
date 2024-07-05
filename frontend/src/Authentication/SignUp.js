@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Link, Container, Avatar, Alert } from '@mui/material';
 import { signUpUser } from '../Redux/AuthSlice';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 const SignUp = () => {
@@ -111,7 +111,7 @@ const SignUp = () => {
             Sign Up
           </Button>
           <Typography variant="body2" color="text.secondary" align="center">
-            Already have an account? <Link href="/Login" variant="body2">Sign in here</Link>
+            Already have an account? <NavLink to="/Login">Sign in here</NavLink>
           </Typography>
         </Box>
       </Box>

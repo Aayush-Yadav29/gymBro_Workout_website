@@ -20,7 +20,7 @@ app.use(cors({
 app.use(express.json()); // Middleware to parse JSON data
 mongoose.connect(process.env.mongoDbURL)
     .then(()=>{
-        app.listen(process.env.PORT, () =>{console.log("server running")})
+        app.listen(process.env.PORT, () =>{console.log("server is running")})
 })
 
 
