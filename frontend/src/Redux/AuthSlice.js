@@ -9,6 +9,7 @@ const initialState = {
 };
 const baseUrl = process.env.REACT_APP_BASE_URL;
 export const signUpUser = createAsyncThunk('signupUser', async (body, thunkAPI) => {
+  console.log("signing in : ",baseUrl);
     try {
       const res = await fetch(`${baseUrl}/api/user/signup`, {
         method: "post",
@@ -33,6 +34,7 @@ export const signUpUser = createAsyncThunk('signupUser', async (body, thunkAPI) 
   });
 
   export const loginUser = createAsyncThunk('loginUser', async (body, thunkAPI) => {
+    console.log("logging in : ",baseUrl);
     try {
       const res = await fetch(`${baseUrl}/api/user/login`, {
         method: "post",
