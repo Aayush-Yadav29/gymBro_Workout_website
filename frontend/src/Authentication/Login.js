@@ -48,8 +48,8 @@ const Login = () => {
           }
           else if(msg == 'valid'){
             console.log("valid login");
-            navigate('/Home');
-            window.location.reload();
+            // navigate('/Home');
+            // window.location.reload();
           }
         }
       })

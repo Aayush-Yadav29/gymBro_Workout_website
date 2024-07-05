@@ -42,7 +42,8 @@ const SignUp = () => {
             setusedEmail(true);
           }
           else if(msg == 'valid'){
-            navigate('/Home');
+            // navigate('/Home');
+            // window.location.reload();
           } 
         }
       })

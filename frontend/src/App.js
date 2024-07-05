@@ -10,9 +10,10 @@ import Login from './Authentication/Login';
 import { PastWorkouts } from './PastWorkouts';
 import LandingPage from './LandingPage';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 function App() {
-  const token = localStorage.getItem('token');
+  const token = useSelector((state)=>{return state.user.token});
   console.log("token:", token, typeof token);
 
   return (
@@ -22,24 +23,24 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={token != null  ? <Navigate to="/Home" /> : <SignUp />}
+            element={token   ? <Navigate to="/Home" /> : <SignUp />}
           />
           <Route
             path="/Login"
-            element={token != null && token != 'undefined'? <Navigate to="/Home" /> : <Login />}
+            element={token ? <Navigate to="/Home" /> : <Login />}
           />
           <Route
             path="/Home"
-            element={token != null ? <Home /> : <Navigate to="/Login" />}
+            element={token ? <Home /> : <Navigate to="/Login" />}
           />
           <Route
             path="/CreateWorkout"
-            element={token != null ? <CreateWorkout /> : <Navigate to="/Login" />}
+            element={token ? <CreateWorkout /> : <Navigate to="/Login" />}
             // element={<CreateWorkout />}
           />
           <Route
             path="/PastWorkouts"
-            element={token != null ? <PastWorkouts /> : <Navigate to="/Login" />}
+            element={token ? <PastWorkouts /> : <Navigate to="/Login" />}
             // element={<PastWorkouts />}
           />        
           <Route
