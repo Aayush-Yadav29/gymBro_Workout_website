@@ -22,11 +22,11 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={token != null ? <Navigate to="/Home" /> : <SignUp />}
+            element={token != null  ? <Navigate to="/Home" /> : <SignUp />}
           />
           <Route
             path="/Login"
-            element={token != null ? <Navigate to="/Home" /> : <Login />}
+            element={token != null && token != 'undefined'? <Navigate to="/Home" /> : <Login />}
           />
           <Route
             path="/Home"

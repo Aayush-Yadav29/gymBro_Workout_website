@@ -37,7 +37,7 @@ const SignUp = () => {
           console.log('Error:', payload.error);
         } else {
           const msg = payload.msg;
-          console.log('from Login.js:', msg);
+          console.log('from signup.js:', msg);
           if (msg === 'Email already in use') {
             setusedEmail(true);
           }
