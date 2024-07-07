@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Link, Container, Avatar, Alert } from '@mui/material';
 import { loginUser } from '../Redux/AuthSlice';
 import { useDispatch } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-
+import { useSelector } from 'react-redux';
+import {CircularProgress } from '@mui/material';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,7 +13,8 @@ const Login = () => {
   const [incorrectEmail, setIncorrectEmail] = useState(false);
   const [incompleteData, setIncompleteData] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const isLoading = useSelector((state)=>{return state.user.isLoading});
+
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -70,7 +72,27 @@ const Login = () => {
   };
 
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="xs" sx={{ position: 'relative' }}>
+      {/* Loader Overlay */}
+      {isLoading && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)', // Semi-transparent background
+            zIndex: 10, // Ensures the loader is on top
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+      {/* Form Content */}
       <Box
         sx={{
           marginTop: 8,
@@ -116,6 +138,7 @@ const Login = () => {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            disabled={isLoading} // Optionally disable button while loading
           >
             Log In
           </Button>

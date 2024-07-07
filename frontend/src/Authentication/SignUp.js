@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import { TextField, Button, Box, Typography, Link, Container, Avatar, Alert } from '@mui/material';
 import { signUpUser } from '../Redux/AuthSlice';
 import { useDispatch } from 'react-redux';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-
+import { useSelector } from 'react-redux';
+import {CircularProgress } from '@mui/material';
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const [usedEmail, setusedEmail] = useState(false);
   const [incompleteData, setIncompleteData] = useState(false);
-  const navigate = useNavigate();
+  const isLoading = useSelector((state)=>{return state.user.isLoading});
+
   
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -28,8 +30,8 @@ const SignUp = () => {
         return;
       }
   
-    console.log('Email:', email);
-    console.log('Password:', password);
+    // console.log('Email:', email);
+    // console.log('Password:', password);
     dispatch(signUpUser({ email, password }))
     .then((response) => {
         const { payload } = response;
@@ -61,7 +63,27 @@ const SignUp = () => {
   };
 
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="xs" sx={{ position: 'relative' }}>
+      {/* Loader Overlay */}
+      {isLoading && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)', // Semi-transparent background
+            zIndex: 10, // Ensures the loader is on top
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
+      {/* Form Content */}
       <Box
         sx={{
           marginTop: 8,
