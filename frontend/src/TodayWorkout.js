@@ -28,7 +28,7 @@ export const TodayWorkout = () => {
                     throw new Error('Network response was not ok');
                 }
                 const result = await response.json();
-                console.log("this is response", result);
+                // console.log("this is response", result);
                 setExercises(result);
             } catch (error) {
                 console.error('Error fetching data:', error);

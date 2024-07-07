@@ -11,6 +11,8 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
+import { useDispatch } from 'react-redux';
+import { logout } from './Redux/AuthSlice';
 import { Link ,useNavigate} from 'react-router-dom';
 
 
@@ -18,6 +20,8 @@ const pages = ['Home', 'Create Workout', 'Past Workouts'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
+    const dispatch = useDispatch();
+
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const navigate = useNavigate();
@@ -40,11 +44,11 @@ function ResponsiveAppBar() {
     const handleLogOut = () => {
         // Handle the click event here
         console.log("Logut clicked!");
+        dispatch(logout());
         // Remove an item from local storage
-        localStorage.clear();
-
-        navigate('/Login');
-        window.location.reload();
+        // localStorage.clear();
+        // navigate('/Login');
+        // window.location.reload();
 
     };
 

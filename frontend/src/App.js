@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 
 function App() {
   const token = useSelector((state)=>{return state.user.token});
-  console.log("token:", token, typeof token);
+  // console.log("token:", token, typeof token);
 
   return (
     <Router>
@@ -36,12 +36,10 @@ function App() {
           <Route
             path="/CreateWorkout"
             element={token ? <CreateWorkout /> : <Navigate to="/Login" />}
-            // element={<CreateWorkout />}
           />
           <Route
             path="/PastWorkouts"
             element={token ? <PastWorkouts /> : <Navigate to="/Login" />}
-            // element={<PastWorkouts />}
           />        
           <Route
             path="/LandingPage"
@@ -49,11 +47,11 @@ function App() {
           />
           <Route
             path="/Home/:id"
-            element={<TodayWorkout />}
+            element={token ? <TodayWorkout /> : <Navigate to="/Login" />}
           />
           <Route
             path="/Home/TodayWorkout/:id"
-            element={<CarouselWorkout />}
+            element={token ? <CarouselWorkout /> : <Navigate to="/Login" />}
           />
         </Routes>
       </div>

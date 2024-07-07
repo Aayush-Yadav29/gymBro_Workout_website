@@ -2,7 +2,7 @@ import * as React from 'react';
 import NewAccordion from './NewAccordian';
 function NestedList() {
   const baseUrl = process.env.REACT_APP_BASE_URL;
-  console.log("baseurl : ",baseUrl);
+  // console.log("baseurl : ",baseUrl);
   const [allWorkouts, setallWorkouts] = React.useState([]);
   const token = localStorage.getItem('token');
   // console.log(typeof token);
@@ -18,7 +18,7 @@ function NestedList() {
           throw new Error('Network response was not ok');
         }
         const result = await response.json();
-        console.log(result);
+        // console.log(result);
         setallWorkouts(result);
       } catch (error) {
         console.error('Error fetching data:', error);
