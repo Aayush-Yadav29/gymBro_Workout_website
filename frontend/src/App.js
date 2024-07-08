@@ -9,13 +9,12 @@ import SignUp from './Authentication/SignUp';
 import Login from './Authentication/Login';
 import { PastWorkouts } from './PastWorkouts';
 import LandingPage from './LandingPage';
-import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import {useSelector } from 'react-redux';
+
 
 function App() {
   const token = useSelector((state)=>{return state.user.token});
   // console.log("token:", token, typeof token);
-
   return (
     <Router>
       <div className="App">
@@ -32,6 +31,7 @@ function App() {
           <Route
             path="/Home"
             element={token ? <Home /> : <Navigate to="/Login" />}
+            // element = {<Home />}
           />
           <Route
             path="/CreateWorkout"

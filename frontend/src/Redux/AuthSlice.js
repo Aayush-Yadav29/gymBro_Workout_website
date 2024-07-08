@@ -1,156 +1,105 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
-const tk = localStorage.getItem('token');
+
+// Retrieve token from localStorage initially
 const initialState = {
-  msg: "",
+  message: "",
   user: "",
-  token: tk | null,
+  token: localStorage.getItem('token') || null,
   isLoading: false,
-  error: ""
+  error: null,
 };
+
 const baseUrl = process.env.REACT_APP_BASE_URL;
-export const signUpUser = createAsyncThunk('signupUser', async (body, thunkAPI) => {
-  // console.log("signing in : ",baseUrl);
-    try {
-      const res = await fetch(`${baseUrl}/api/user/signup`, {
-        method: "post",
-        headers: {
-          'Content-Type': "application/json"
-        },
-        body: JSON.stringify(body)
-      });
-  
-      if (!res.ok) {
-        // If the response is not in the 200-299 range, throw an error
-        throw new Error(`HTTP error ${res.status}`);
-      }
-  
-      const data = await res.json();
-      return data;
-    } catch (error) {
-      // Handle any errors that occurred during the fetch request
-      const message = error.message || 'Something went wrong';
-      return thunkAPI.rejectWithValue(message);
-    }
-  });
 
-  export const loginUser = createAsyncThunk('loginUser', async (body, thunkAPI) => {
-    // const dispatch = useDispatch();
+export const signUpUser = createAsyncThunk('user/signUpUser', async (body, thunkAPI) => {
+  try {
+    const res = await fetch(`${baseUrl}/api/user/signup`, {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
 
-    // console.log("logging in : ",baseUrl);
-    try {
-      const res = await fetch(`${baseUrl}/api/user/login`, {
-        method: "post",
-        headers: {
-          'Content-Type': "application/json"
-        },
-        body: JSON.stringify(body)
-      });
-      
-      if (!res.ok) {
-        // If the response is not in the 200-299 range, throw an error
-        throw new Error(`HTTP error ${res.status}`);
-      }
-  
-      const data = await res.json();
-      // dispatch(addToken(data.token));
-      // console.log(data);
-      return data;
-    } catch (error) {
-      // Handle any errors that occurred during the fetch request
-      const message = error.message || 'Something went wrong';
-      return thunkAPI.rejectWithValue(message);
-    }
-  });
+    if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+
+    return await res.json();
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
+  }
+});
+
+export const loginUser = createAsyncThunk('user/loginUser', async (body, thunkAPI) => {
+  try {
+    const res = await fetch(`${baseUrl}/api/user/login`, {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+
+    return await res.json();
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
+  }
+});
 
 const authSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-        addToken : (state,action)=>{
-          state.token = action.payload;
-        },
-        addUser : (state,action)=>{
-          state.user = localStorage.getItem("user");
-        },
-        logout : (state,action)=>{
-          state.token = null;
-          localStorage.clear();
-        },
-
+    setToken: (state, action) => {
+      state.token = action.payload;
+      localStorage.setItem('token', action.payload);
+    },
+    setUser: (state, action) => {
+      state.user = action.payload;
+      localStorage.setItem('user', JSON.stringify(action.payload));
+    },
+    logout: (state) => {
+      state.token = null;
+      state.user = null;
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+    },
   },
   extraReducers: (builder) => {
     builder
-      // ************* signup ***********************
-      .addCase(signUpUser.pending, (state, action) => {
+      .addCase(signUpUser.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(signUpUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        let responseData = action.payload;
-        console.log(responseData);
-        state.isLoading = false;
-        if(responseData.error){
-          state.error = responseData.error;
-        }
-
-        else{
-          // console.log("msg : ",responseData.msg);
-          // console.log("token : ",responseData.token);
-          // console.log("user : ",responseData.email);
-          
-          state.msg = responseData.msg;
-          state.token = responseData.token;
-          state.user = responseData.user;
-
-          localStorage.setItem('token',state.token);
-          // localStorage.setItem('user',JSON.stringify(state.user));
-          // localStorage.setItem('token',state.token);
-          
-        }
+        const { token, user, message } = action.payload;
+        state.token = token;
+        state.user = user;
+        state.message = message;
+        state.error = null;
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
       })
       .addCase(signUpUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
-        // Handle rejection if needed
+        state.error = action.payload || action.error.message;
       })
-
-
-      // ************* login ***********************
-      .addCase(loginUser.pending, (state, action) => {
+      .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(loginUser.fulfilled, (state, action) => {
-        let responseData = action.payload;
-        // console.log(responseData);
         state.isLoading = false;
-        if(responseData.error){
-          state.error = responseData.error;
-        }
-
-        else{
-          // console.log("msg : ",responseData.msg);
-          // console.log("token : ",responseData.token);
-          // console.log("user : ",responseData.email);
-          
-          state.msg = responseData.msg;
-          state.token = responseData.token;
-          state.user = responseData.user;
-
-          localStorage.setItem('token',state.token);
-          // localStorage.setItem('user',JSON.stringify(state.user));
-          // localStorage.setItem('token',state.token);
-          
-        }
-        
+        const { token, user, message } = action.payload;
+        state.token = token;
+        state.user = user;
+        state.message = message;
+        state.error = null;
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message;
-        // Handle rejection if needed
+        state.error = action.payload || action.error.message;
       });
   },
 });
 
-export const {addToken,addUser,logout} = authSlice.actions;
+export const { setToken, setUser, logout } = authSlice.actions;
 export default authSlice.reducer;

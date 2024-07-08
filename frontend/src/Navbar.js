@@ -13,18 +13,16 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { useDispatch } from 'react-redux';
 import { logout } from './Redux/AuthSlice';
-import { Link ,useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 
-const pages = ['Home', 'Create Workout', 'Past Workouts'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pages = ['Home', 'Create Workout', 'Past Workouts', 'Dashboard'];
+const settings = ['My Profile', 'Logout'];
 
 function ResponsiveAppBar() {
     const dispatch = useDispatch();
-
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-    const navigate = useNavigate();
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -42,14 +40,8 @@ function ResponsiveAppBar() {
     };
 
     const handleLogOut = () => {
-        // Handle the click event here
         console.log("Logut clicked!");
         dispatch(logout());
-        // Remove an item from local storage
-        // localStorage.clear();
-        // navigate('/Login');
-        // window.location.reload();
-
     };
 
     return (
@@ -105,7 +97,23 @@ function ResponsiveAppBar() {
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
+
+                                    <Button
+                                        key={page}
+                                        component={Link}
+                                        to={`/${page.replace(/\s+/g, '')}`}
+                                        onClick={handleCloseNavMenu}
+                                        sx={{
+                                            mt: 1,
+                                            mb: 1,
+                                            ':hover': {
+                                              backgroundColor: 'white',
+                                              boxShadow: 'none'
+                                            },
+                                          }}
+                                    >
+                                        <Typography textAlign="center" color={"black"}>{page}</Typography>
+                                    </Button>
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -145,7 +153,7 @@ function ResponsiveAppBar() {
 
 
                     <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
+                        <Tooltip >
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
                             </IconButton>
@@ -167,13 +175,13 @@ function ResponsiveAppBar() {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                               <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                               {setting === 'Logout' && (
-                                   <Typography textAlign="center" onClick={handleLogOut}>
-                                       {setting}
-                                   </Typography>
-                               )}
-                           </MenuItem>
+                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                    {setting === 'Logout' && (
+                                        <Typography textAlign="center" onClick={handleLogOut}>
+                                            {setting}
+                                        </Typography>
+                                    )}
+                                </MenuItem>
                             ))}
                         </Menu>
                     </Box>
