@@ -7,6 +7,7 @@ const { ObjectId } = require('mongodb');
 const userRoutes = require('./routes/user')
 const cors = require('cors');
 const verifyToken = require('./middlewares/verifyToken');
+const path = require('path');
 
 require('dotenv').config()
 app.use(cors());
@@ -17,6 +18,8 @@ app.use(cors({
   origin: allowedOrigins
 }));
 
+
+
 app.use(express.json()); // Middleware to parse JSON data
 mongoose.connect(process.env.mongoDbURL)
     .then(()=>{
@@ -25,9 +28,9 @@ mongoose.connect(process.env.mongoDbURL)
 
 
 
-
 // routes for authentcation
 app.use('/api/user', userRoutes)
+
 
 // Routes that require authentication
 // route to save a workout template
@@ -153,5 +156,12 @@ app.get('/api/getTodayWorkouts/:id',verifyToken,(req,res)=>{
   });
 });
 
+// Serve static files from the React app's build directory
+app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+// Catch-all route to handle client-side routing
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
+});
   
   
