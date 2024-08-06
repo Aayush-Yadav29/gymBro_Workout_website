@@ -16,8 +16,13 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-
-
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Box from '@mui/material/Box';
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -29,7 +34,9 @@ const ExpandMore = styled((props) => {
   }),
 }));
 
-export default function CardDisplay({ Ex_title, Sets, Reps, CardNumber, TotalCards, prevSlide, nextSlide, currSlide, lengthCards }) {
+export default function CardDisplay({ Ex_title, Sets, Reps, CardNumber, TotalCards, prevSlide, nextSlide, currSlide, lengthCards, cardInfo }) {
+
+  // console.log("from cardisplay : ", cardInfo);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -37,23 +44,68 @@ export default function CardDisplay({ Ex_title, Sets, Reps, CardNumber, TotalCar
 
 
   return (
-    <div>
-      <Card sx={{ maxWidth: 345 }}>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'red',
+      }}
+    >
+      <Card
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          width: '100%',
+          alignItems: 'center',
+          justifyContent: 'center',
+          maxWidth: 345,
+          boxShadow: 3,    // Optional: adds some shadow for better visibility
+        }}
+      >
+
         <CardHeader
           title={Ex_title}
           subheader={CardNumber.toString() + " of " + TotalCards.toString()}
         />
         <CardMedia
-        // here you can add gif of exercise
-        // for now lets keep exercise name
-
+          component="img"
+          image={cardInfo[0].gifUrl}
+          alt="Exercise GIF"
+          sx={{
+            width: '100%',  // This will make the image responsive
+            maxWidth: '200px',  // Adjust this value to your desired maximum width
+            height: 'auto',  // This allows the height to adjust based on the aspect ratio
+            maxHeight: '300px',  // Adjust this value to your desired maximum height
+            objectFit: 'contain',  // This ensures the entire image is visible without cropping
+            margin: 'auto',  // This centers the image if it's smaller than its container
+          }}
         />
         <CardContent>
-          <Typography variant="h6">Sets</Typography>
-          <Typography variant="body1">{Sets}</Typography>
-          <Typography variant="h6">Reps</Typography>
-          <Typography variant="body1">{Reps}</Typography>
-          
+          <TableContainer>
+            <Table sx={{
+              width: '80%',
+              '& .MuiTableCell-root': {
+                borderBottom: 'none'
+              }
+            }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell align="center">Sets</TableCell>
+                  <TableCell align="center">Reps</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell align="center"><Typography variant="body1">{Sets}</Typography></TableCell>
+                  <TableCell align="center"><Typography variant="body1">{Reps}</Typography></TableCell>
+
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+
+
         </CardContent>
         <CardActions disableSpacing>
           <ExpandMore
@@ -69,12 +121,11 @@ export default function CardDisplay({ Ex_title, Sets, Reps, CardNumber, TotalCar
           <CardContent>
             <Typography paragraph>Method:</Typography>
             <Typography paragraph>
-              Heat 1/2 cup of the broth in a pot until simmering, add saffron and set
-              aside for 10 minutes.
+              {cardInfo[0].instructions}
             </Typography>
           </CardContent>
         </Collapse>
       </Card>
-    </div>
+    </Box>
   );
 }

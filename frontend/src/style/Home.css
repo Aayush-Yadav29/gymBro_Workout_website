@@ -1,0 +1,136 @@
+/* General Styles */
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Parallax Section */
+.parallax {
+    height: 100vh; /* Full screen height */
+    background-image: url('../../public/images/h1_hero.png'); /* Replace with your image URL */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+.divApp{
+    background-color: black;
+    width: 100%;
+    height: 100%;
+}
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    padding-left: 50px; /* Adjust as needed */
+    color: white;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+}
+
+.overlay h1 {
+    margin: 0;
+    font-size: 3rem;
+}
+
+.overlay p {
+    margin: 10px 0 0 0;
+    font-size: 1.5rem;
+}
+
+/* Content Section */
+.content {
+    padding: 50px;
+    background: #f4f4f4;
+}
+
+.content h2 {
+    margin-top: 0;
+}
+
+/* Responsive Styles */
+@media (max-width: 1200px) {
+    .overlay {
+        padding-left: 30px; /* Less padding on smaller screens */
+    }
+
+    .overlay h1 {
+        font-size: 2.5rem;
+    }
+
+    .overlay p {
+        font-size: 1.25rem;
+    }
+
+    .content {
+        padding: 40px;
+    }
+}
+
+@media (max-width: 992px) {
+    .overlay {
+        padding-left: 20px; /* Less padding on smaller screens */
+        text-align: center; /* Center text */
+        justify-content: center;
+    }
+
+    .overlay h1 {
+        font-size: 2rem;
+    }
+
+    .overlay p {
+        font-size: 1.1rem;
+    }
+
+    .content {
+        padding: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .parallax {
+        background-attachment: scroll; /* Remove fixed background on mobile */
+    }
+
+    .overlay {
+        padding-left: 10px; /* Even less padding */
+    }
+
+    .overlay h1 {
+        font-size: 1.75rem;
+    }
+
+    .overlay p {
+        font-size: 1rem;
+    }
+
+    .content {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .overlay {
+        padding-left: 5px; /* Minimal padding */
+        flex-direction: column; /* Stack text vertically */
+        align-items: center; /* Center text */
+    }
+
+    .overlay h1 {
+        font-size: 1.5rem;
+    }
+
+    .overlay p {
+        font-size: 0.9rem;
+    }
+
+    .content {
+        padding: 15px;
+    }
+}

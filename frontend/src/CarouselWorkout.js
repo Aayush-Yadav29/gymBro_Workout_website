@@ -5,6 +5,8 @@ import CardDisplay from './CardDisplay';
 import TextField from '@mui/material/TextField';
 import { Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import Box from '@mui/material/Box';
+
 export default function CarouselWorkout() {
     const baseUrl = process.env.REACT_APP_BASE_URL;
     const navigate = useNavigate();
@@ -12,7 +14,7 @@ export default function CarouselWorkout() {
     const [showNotification, setShowNotification] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
     const { id } = useParams();
-    console.log(id);
+    // console.log(id);
     const [exercises, setExercises] = useState([]);
     const [newArray, setnewArray] = useState([]);
     const [check, setcheck] = useState(false);
@@ -25,7 +27,6 @@ export default function CarouselWorkout() {
     // array to store weight inputs
     const [inputWeights, setInputWeights] = useState([]);
     useEffect(() => {
-        console.log("newArray");
         setInputWeights(new Array(newArray.length).fill(0));
     }, [newArray]);
 
@@ -75,20 +76,20 @@ export default function CarouselWorkout() {
             updatedWeights[currentSlide] = weight;
             setInputWeights(updatedWeights);
             const workoutData = []
-            let i =0;
-            newArray.map(item=>{
+            let i = 0;
+            newArray.map(item => {
                 const obj = {
-                    exercise : item.exercise,
+                    exercise: item.exercise,
                     sets: item.sets,
                     reps: item.reps,
                     weight: Number(updatedWeights[i])
                 }
                 workoutData.push(obj);
-                i+=1;
+                i += 1;
             })
             const todayDate = new Date();
-            const data = {date: String(todayDate),title: exercises.title ,workoutData: workoutData}
-            console.log(data);
+            const data = { date: String(todayDate), title: exercises.title, workoutData: workoutData }
+            // console.log(data);
             fetch(`${baseUrl}/api/addPastWorkout`, {
                 method: 'POST',
                 headers: {
@@ -108,35 +109,38 @@ export default function CarouselWorkout() {
             // console.log("inputwt", inputWeights);
             // Redirect to the home page
             setShowNotification(true);
-            setTimeout(function() {
+            setTimeout(function () {
                 setShowNotification(false);
                 navigate('/Home');
             }, 3000);
-            
+
             // setShowNotification(true); // Set showNotification to true after successful submission
         }
     };
 
 
     useEffect(() => {
-        console.log("entering useefect");
+        // console.log("entering useefect");
         const fetchData = async () => {
             try {
-                console.log("making req");
-                const response = await fetch(`${baseUrl}/api/getWorkouts/${id}`,{
+                // console.log("making req");
+                const response = await fetch(`${baseUrl}/api/getWorkouts/${id}`, {
                     headers: {
-                      'Authorization': token
+                        'Authorization': token
                     }
-                  });
-                console.log("req made");
+                });
+                // console.log("req made");
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 const result = await response.json();
-                console.log("this is response for card", result);
+                // console.log("this is response for card", result);
                 setExercises(result);
                 setnewArray(result.exerciseData);
-                setcheck(true);
+                fetchInfo(result.exerciseData);
+                // testapi();
+                // console.log("res : ", result.exerciseData);
+                // setcheck(true);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -144,9 +148,74 @@ export default function CarouselWorkout() {
 
         fetchData();
     }, []);
+
+    const [infoArr, setInfoArr] = useState([]);
+    const options = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-key': process.env.REACT_APP_RAPID_API_KEY,
+            'x-rapidapi-host': 'exercisedb.p.rapidapi.com'
+        }
+    };
+    async function fetchInfo(arr) {
+        try {
+            const promises = arr.map(val => apiCall(val.exercise));
+            const results = await Promise.all(promises);
+            setInfoArr(results);
+            setcheck(true);
+        } catch (error) {
+            console.error("Error fetching info:", error);
+        }
+    }
+
+    function apiCall(name) {
+        // console.log("name : ",name);
+        if (typeof name !== 'string' || name.trim() === '') {
+            console.error('Invalid input: name must be a non-empty string');
+            // return Promise.reject(new Error('Invalid input'));
+        }
+        const url = `https://exercisedb.p.rapidapi.com/exercises/name/${name.toLowerCase()}`;
+        return fetchData(url);
+    }
+    // const testapi = async () => {
+    //     // console.log("name : ",name);
+        
+    //     const url = 'https://exercisedb.p.rapidapi.com/exercises/name/deadlift';
+    //     try {
+    //         const response = await fetch(url, options);
+    //         const result = await response.json();
+    //         console.log("squat : ",result);
+    //         return result;
+    //     } catch (error) {
+    //         console.error(error);
+    //     }
+        
+    // }
+
+    const fetchData = async (url) => {
+        try {
+            const response = await fetch(url, options);
+            const result = await response.json();
+            return result;
+            // console.log("result : ", result);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <div>
-            <div>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexDirection: 'column',
+                    gap: 2, // Adds space between items
+                    padding: 2, // Adds some padding around the content
+                    alignItems: 'center',
+                    minHeight: '100vh', // This ensures the container takes up the full viewport height
+                }}
+            >
                 {check && (
                     <CardDisplay
                         Ex_title={newArray[currentSlide].exercise}
@@ -158,6 +227,7 @@ export default function CarouselWorkout() {
                         nextSlide={nextSlide}
                         lengthCards={newArray.length - 1}
                         currSlide={currentSlide}
+                        cardInfo={infoArr[currentSlide]}
                     />
 
                 )}
@@ -170,7 +240,7 @@ export default function CarouselWorkout() {
                 {/* {console.log("here",inputWeights)} */}
                 <TextField
                     id="standard-basic"
-                    label="Weight (in kg)"
+                    label="Enter weight (in kg)"
                     variant="standard"
                     value={weight}
                     onChange={handleWeightChange}
@@ -193,15 +263,15 @@ export default function CarouselWorkout() {
                 )}
                 {/* Notification component */}
                 {showNotification && (
-                    
+
                     <Alert severity="success" onClose={() => {
                         setShowNotification(false);
                         navigate('/Home');
-                        }}>
+                    }}>
                         Congrats, your workout for today is completed and saved. See you Tomorrow !!
                     </Alert>
                 )}
-            </div>
+            </Box>
         </div>
     )
 }

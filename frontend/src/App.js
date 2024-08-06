@@ -10,6 +10,7 @@ import Login from './Authentication/Login';
 import { PastWorkouts } from './PastWorkouts';
 import LandingPage from './LandingPage';
 import {useSelector } from 'react-redux';
+import Dash from './Dash';
 
 
 function App() {
@@ -42,8 +43,8 @@ function App() {
             element={token ? <PastWorkouts /> : <Navigate to="/Login" />}
           />        
           <Route
-            path="/LandingPage"
-            element={<LandingPage />}
+            path="/Dashboard"
+            element = {<Dash/>}
           />
           <Route
             path="/Home/:id"

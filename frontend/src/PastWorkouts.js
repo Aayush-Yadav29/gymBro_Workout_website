@@ -41,7 +41,7 @@ export const PastWorkouts = () => {
   };
   const [allWorkouts, setallWorkouts] = React.useState([]);
   const token = localStorage.getItem('token');
-  console.log(token);
+  // console.log(token);
   React.useEffect(() => {
     const fetchData = async () => {
       try {
