@@ -6,13 +6,36 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import DeleteIcon from '@mui/icons-material/Delete';
 import bgImage from './img/bg.png';
-const {exercises} = require('./data');
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Slide from '@mui/material/Slide';
+import { useNavigate } from 'react-router-dom';
+
+const { exercises } = require('./data');
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export default function CreateWorkout() {
+  const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const token = localStorage.getItem('token');
+  const [showNotification, setShowNotification] = useState(false);
   const [title, settitle] = useState('');
-  
+
   const [formFields, setFormFields] = useState([{ exercise: null, sets: '', reps: '' }]);
   const handleAddExercise = () => {
     setFormFields([...formFields, { exercise: null, sets: '', reps: '' }]);
@@ -58,88 +81,125 @@ export default function CreateWorkout() {
         // Handle error, show error message, etc.
       });
 
-    // <Alert severity="error">
-    //   <AlertTitle>Error</AlertTitle>
-    //   This is an error alert — <strong>check it out!</strong>
-    // </Alert>
+    setShowNotification(true);
 
   };
 
   return (
     <Box style={{
+      marginTop: '5%',
+      display: 'flex',
+      justifyContent: 'center',
       // backgroundImage: `url(${bgImage})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',backgroundAttachment: 'fixed',
-    height: '100vh'}}>
-      <TextField
-        label="Title of Workout"
-        value={title}
-        onChange={(e) => {
-          settitle(e.target.value);
-        }}
-      />
-      <Container style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}>
-        <form onSubmit={handleSubmit}>
-          {formFields.map((field, index) => (
-            <Box key={index} style={{ display: "flex", marginBottom: "10px" }}>
-              <Autocomplete
-                style={{ marginRight: "10px", width: "40%" }}
-                id={`exercise-${index}`}
-                options={exercises}
-                value={field.exercise}
-                onChange={(event, newValue) => {
-                  const updatedFormFields = [...formFields];
-                  updatedFormFields[index].exercise = newValue;
-                  setFormFields(updatedFormFields);
-                }}
-                renderInput={(params) => <TextField {...params} label="Exercise" />}
-              />
+      // backgroundSize: 'cover',
+      // backgroundPosition: 'center', backgroundAttachment: 'fixed',
+      // height: '100vh'
+    }}>
+      <Box style={{
 
-              <TextField
-                style={{ marginRight: "10px", width: "25%" }}
-                label="Sets"
-                value={field.sets}
-                onChange={(e) => {
-                  const updatedFormFields = [...formFields];
-                  updatedFormFields[index].sets = e.target.value;
-                  setFormFields(updatedFormFields);
-                }}
-              />
+      }}>
+        <TextField
+          label="Title of Workout"
+          value={title}
+          onChange={(e) => {
+            settitle(e.target.value);
+          }}
+          required
+        />
+        <Container style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}>
+          <form onSubmit={handleSubmit}>
+            {formFields.map((field, index) => (
+              <Box key={index} style={{ display: "flex", marginBottom: "10px" }}>
+                <Autocomplete
+                  style={{ marginRight: "10px", width: "40%" }}
+                  id={`exercise-${index}`}
+                  options={exercises}
+                  value={field.exercise}
+                  onChange={(event, newValue) => {
+                    const updatedFormFields = [...formFields];
+                    updatedFormFields[index].exercise = newValue;
+                    setFormFields(updatedFormFields);
+                  }}
+                  renderInput={(params) => <TextField {...params} label="Exercise" />}
+                  required
+                />
 
-              <TextField
-                style={{ width: "25%" }}
-                label="Reps"
-                value={field.reps}
-                onChange={(e) => {
-                  const updatedFormFields = [...formFields];
-                  updatedFormFields[index].reps = e.target.value;
-                  setFormFields(updatedFormFields);
-                }}
-              />
+                <TextField
+                  style={{ marginRight: "10px", width: "25%" }}
+                  label="Sets"
+                  value={field.sets}
+                  onChange={(e) => {
+                    const updatedFormFields = [...formFields];
+                    updatedFormFields[index].sets = e.target.value;
+                    setFormFields(updatedFormFields);
+                  }}
+                  inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}  // Ensures only numeric input
+                  required
+                />
 
-              {formFields.length > 1 && (
-                <Button type="button" onClick={() => handleRemoveExercise(index)}>
-                  {/* Remove */}
-                  <DeleteIcon />
-                </Button>
-              )}
-            </Box>
-          ))}
+                <TextField
+                  style={{ width: "25%" }}
+                  label="Reps"
+                  value={field.reps}
+                  onChange={(e) => {
+                    const updatedFormFields = [...formFields];
+                    updatedFormFields[index].reps = e.target.value;
+                    setFormFields(updatedFormFields);
+                  }}
+                  inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}  // Ensures only numeric input
+                  required
+                />
 
-          <div style={{ display: "flex", justifyContent: "right" }}>
-            <Button
-              type="button"
-              onClick={handleAddExercise}
-            >
-              Add Exercise
+                {formFields.length > 1 && (
+                  <Button type="button" onClick={() => handleRemoveExercise(index)}>
+                    {/* Remove */}
+                    <DeleteIcon />
+                  </Button>
+                )}
+              </Box>
+            ))}
+
+            <div style={{ display: "flex", justifyContent: "right" }}>
+              <Button
+                type="button"
+                onClick={handleAddExercise}
+              >
+                Add Exercise
+              </Button>
+            </div>
+
+            <Button type="button" variant="contained" color="primary">
+              Submit
             </Button>
-          </div>
+          </form>
+        </Container>
+      </Box>
+      {/* Notification component */}
+      {showNotification && (
 
-          <Button type="submit" variant="contained" color="primary">
-            Submit
-          </Button>
-        </form>
-      </Container>
+        <React.Fragment>
+          {/* <Button variant="outlined" onClick={handleClickOpen}>
+            Slide in alert dialog
+          </Button> */}
+          <Dialog
+            open={showNotification}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={handleClose}
+            aria-describedby="alert-dialog-slide-description"
+          >
+            {/* <DialogTitle>{"Use Google's location service?"}</DialogTitle> */}
+            <DialogContent>
+              <DialogContentText id="alert-dialog-slide-description">
+                Workout created successfully !
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button type='submit' onClick={navigate('/Home')}>Okay</Button>
+            </DialogActions>
+          </Dialog>
+        </React.Fragment>
+      )}
     </Box>
   )
 }
