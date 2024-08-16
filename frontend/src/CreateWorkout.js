@@ -6,34 +6,17 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import DeleteIcon from '@mui/icons-material/Delete';
 import bgImage from './img/bg.png';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
+import Alert from '@mui/material/Alert';
 import { useNavigate } from 'react-router-dom';
 
 const { exercises } = require('./data');
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 export default function CreateWorkout() {
-  const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const token = localStorage.getItem('token');
-  const [showNotification, setShowNotification] = useState(false);
+  const [showAlert, setshowAlert] = useState(false);
   const [title, settitle] = useState('');
 
   const [formFields, setFormFields] = useState([{ exercise: null, sets: '', reps: '' }]);
@@ -49,6 +32,10 @@ export default function CreateWorkout() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (title.trim() === '') {
+      setshowAlert(true);
+      return;
+    }
 
     const inputList = formFields;
     const outputList = inputList.map(item => ({
@@ -60,7 +47,7 @@ export default function CreateWorkout() {
       title: title,
       blocks: outputList,
     };
-    console.log(outputList);
+    // console.log(outputList);
 
     fetch(`${baseUrl}/api/addWorkout`, {
       method: 'POST',
@@ -73,7 +60,7 @@ export default function CreateWorkout() {
     })
       .then(response => response.json())
       .then(data => {
-        console.log('Data sent successfully:', data);
+        // console.log('Data sent successfully:', data);
         // Optionally, reset form fields or perform other actions after successful submission
       })
       .catch(error => {
@@ -81,13 +68,14 @@ export default function CreateWorkout() {
         // Handle error, show error message, etc.
       });
 
-    setShowNotification(true);
+    navigate('/Home');
 
   };
 
   return (
     <Box style={{
       marginTop: '5%',
+      marginLeft : '3%',
       display: 'flex',
       justifyContent: 'center',
       // backgroundImage: `url(${bgImage})`,
@@ -120,8 +108,13 @@ export default function CreateWorkout() {
                     updatedFormFields[index].exercise = newValue;
                     setFormFields(updatedFormFields);
                   }}
-                  renderInput={(params) => <TextField {...params} label="Exercise" />}
-                  required
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="Exercise"
+                      required
+                    />
+                  )}
                 />
 
                 <TextField
@@ -168,38 +161,19 @@ export default function CreateWorkout() {
               </Button>
             </div>
 
-            <Button type="button" variant="contained" color="primary">
+            <Button type="submit" variant="contained" color="primary">
               Submit
             </Button>
+            <Box style={{marginTop: '20px'}}>
+              {showAlert && (
+                <Alert severity="error">Enter title of the workout.</Alert>
+              )}
+            </Box>
+
           </form>
         </Container>
       </Box>
-      {/* Notification component */}
-      {showNotification && (
 
-        <React.Fragment>
-          {/* <Button variant="outlined" onClick={handleClickOpen}>
-            Slide in alert dialog
-          </Button> */}
-          <Dialog
-            open={showNotification}
-            TransitionComponent={Transition}
-            keepMounted
-            onClose={handleClose}
-            aria-describedby="alert-dialog-slide-description"
-          >
-            {/* <DialogTitle>{"Use Google's location service?"}</DialogTitle> */}
-            <DialogContent>
-              <DialogContentText id="alert-dialog-slide-description">
-                Workout created successfully !
-              </DialogContentText>
-            </DialogContent>
-            <DialogActions>
-              <Button type='submit' onClick={navigate('/Home')}>Okay</Button>
-            </DialogActions>
-          </Dialog>
-        </React.Fragment>
-      )}
     </Box>
   )
 }
