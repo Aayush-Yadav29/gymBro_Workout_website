@@ -62,14 +62,14 @@ export default function CreateWorkout() {
       .then(data => {
         // console.log('Data sent successfully:', data);
         // Optionally, reset form fields or perform other actions after successful submission
+        navigate('/Home');
       })
       .catch(error => {
         console.error('Error sending data:', error);
         // Handle error, show error message, etc.
       });
 
-    navigate('/Home');
-
+      
   };
 
   return (

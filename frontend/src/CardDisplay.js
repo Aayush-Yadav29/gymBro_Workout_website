@@ -49,32 +49,40 @@ export default function CardDisplay({ Ex_title, Sets, Reps, CardNumber, TotalCar
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'red',
+        // backgroundColor: 'red',
       }}
     >
       <Card
         sx={{
+          color: 'white', // Text color
           display: 'flex',
           flexDirection: 'column',
           width: '100%',
           alignItems: 'center',
           justifyContent: 'center',
           maxWidth: 345,
-          boxShadow: 3,    // Optional: adds some shadow for better visibility
+          backgroundColor: '#161a1f', // Card background color
+          border: '2px solid', // Border style and width
+          borderColor: '#2e343d', // Border color
+          borderRadius: '12px', // Optional: Rounded corners
+          padding: 2, // Optional: Padding inside the card
         }}
       >
 
         <CardHeader
+          sx = {{color:'white',maxWidth: 300,minWidth:300,}}
           title={Ex_title}
-          subheader={CardNumber.toString() + " of " + TotalCards.toString()}
+          subheader={<Typography sx={{color:'white'}}>{CardNumber.toString() + " of " + TotalCards.toString()}</Typography>}
         />
         <CardMedia
           component="img"
           image={cardInfo[0].gifUrl}
           alt="Exercise GIF"
           sx={{
+            borderRadius: '6px',
+            color:'white',
             width: '100%',  // This will make the image responsive
-            maxWidth: '200px',  // Adjust this value to your desired maximum width
+            maxWidth: '250px',  // Adjust this value to your desired maximum width
             height: 'auto',  // This allows the height to adjust based on the aspect ratio
             maxHeight: '300px',  // Adjust this value to your desired maximum height
             objectFit: 'contain',  // This ensures the entire image is visible without cropping
@@ -91,14 +99,14 @@ export default function CardDisplay({ Ex_title, Sets, Reps, CardNumber, TotalCar
             }} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell align="center">Sets</TableCell>
-                  <TableCell align="center">Reps</TableCell>
+                  <TableCell align="center" sx= {{color:'white'}}>Sets</TableCell>
+                  <TableCell align="center" sx= {{color:'white'}}>Reps</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell align="center"><Typography variant="body1">{Sets}</Typography></TableCell>
-                  <TableCell align="center"><Typography variant="body1">{Reps}</Typography></TableCell>
+                  <TableCell align="center"><Typography variant="body1" sx= {{color:'white'}}>{Sets}</Typography></TableCell>
+                  <TableCell align="center"><Typography variant="body1" sx= {{color:'white'}}>{Reps}</Typography></TableCell>
 
                 </TableRow>
               </TableBody>
@@ -114,10 +122,10 @@ export default function CardDisplay({ Ex_title, Sets, Reps, CardNumber, TotalCar
             aria-expanded={expanded}
             aria-label="show more"
           >
-            <ExpandMoreIcon />
+            <ExpandMoreIcon sx={{color:'white'}} />
           </ExpandMore>
         </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <Collapse in={expanded} timeout="auto" unmountOnExit sx = {{color:'white',maxWidth: 300,minWidth:300,}}>
           <CardContent>
             <Typography paragraph>Method:</Typography>
             <Typography paragraph>

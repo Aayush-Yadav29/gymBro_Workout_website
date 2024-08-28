@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 import { Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
-
+import { Container, Stack, CircularProgress } from '@mui/material';
 export default function CarouselWorkout() {
     const baseUrl = process.env.REACT_APP_BASE_URL;
     const navigate = useNavigate();
@@ -14,6 +14,7 @@ export default function CarouselWorkout() {
     const [showNotification, setShowNotification] = useState(false);
     const [currentSlide, setCurrentSlide] = useState(0);
     const { id } = useParams();
+    const [loading, setLoading] = useState(true); // Add loading state
     // console.log(id);
     const [exercises, setExercises] = useState([]);
     const [newArray, setnewArray] = useState([]);
@@ -163,6 +164,7 @@ export default function CarouselWorkout() {
             const results = await Promise.all(promises);
             setInfoArr(results);
             setcheck(true);
+            setLoading(false);
         } catch (error) {
             console.error("Error fetching info:", error);
         }
@@ -179,7 +181,7 @@ export default function CarouselWorkout() {
     }
     // const testapi = async () => {
     //     // console.log("name : ",name);
-        
+
     //     const url = 'https://exercisedb.p.rapidapi.com/exercises/name/deadlift';
     //     try {
     //         const response = await fetch(url, options);
@@ -189,7 +191,7 @@ export default function CarouselWorkout() {
     //     } catch (error) {
     //         console.error(error);
     //     }
-        
+
     // }
 
     const fetchData = async (url) => {
@@ -202,7 +204,13 @@ export default function CarouselWorkout() {
             console.error(error);
         }
     };
-
+    if (loading) {
+        return (
+            <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
+                <CircularProgress />
+            </Box>
+        );
+    }
     return (
         <div>
             <Box
@@ -211,9 +219,11 @@ export default function CarouselWorkout() {
                     justifyContent: 'center',
                     flexDirection: 'column',
                     gap: 2, // Adds space between items
-                    padding: 2, // Adds some padding around the content
+                    padding: 5, // Adds some padding around the content
                     alignItems: 'center',
                     minHeight: '100vh', // This ensures the container takes up the full viewport height
+                    bgcolor: '#0f1012', // Dark background color
+                    color: '#ffffff', // Light text color
                 }}
             >
                 {check && (
@@ -229,49 +239,123 @@ export default function CarouselWorkout() {
                         currSlide={currentSlide}
                         cardInfo={infoArr[currentSlide]}
                     />
-
                 )}
                 {/* Conditional rendering of error alert */}
                 {showError && (
-                    <Alert variant="outlined" severity="error">
+                    <Alert variant="outlined" severity="error" sx={{ color: '#ff6f6f', bgcolor: '#212121' }}>
                         Please enter valid weight!
                     </Alert>
                 )}
-                {/* {console.log("here",inputWeights)} */}
+                {/* <TextField id="outlined-basic" label="Outlined" variant="outlined" /> */}
                 <TextField
-                    id="standard-basic"
+                    id="outlined-basic"
                     label="Enter weight (in kg)"
-                    variant="standard"
+                    variant="outlined"
                     value={weight}
                     onChange={handleWeightChange}
+                    sx={{
+                        input: { color: '#ffffff' }, // Input text color
+                        label: { color: '#ffffff' }, // Label text color
+                        '& .MuiOutlinedInput-root': {
+                            '& fieldset': {
+                                borderColor: '#2e343d', // Default border color
+                            },
+
+                            '&.Mui-focused fieldset': {
+                                borderColor: '#ffffff', // Border color when focused
+                                label: { color: '#ffffff' }, // Label text color
+                            },
+                            '&:hover fieldset': {
+                                borderColor: '#ffffff', // Border color on hover
+                            },
+                        },
+                    }}
                 />
-                <Typography variant="body1">
-                    <Button onClick={prevSlide} disabled={currentSlide === 0}>
+                <Typography variant="body1" sx={{ color: '#ffffff' }}>
+                    <Button
+                        variant="outlined"
+                        onClick={prevSlide}
+                        disabled={currentSlide === 0}
+                        sx={{
+                            marginRight: '90px',
+                            color: 'white', // Text color
+                            borderColor: '#2e343d', // Outline color
+                            backgroundColor: '#161a1f', // Background color
+                            '&:hover': {
+                                backgroundColor: '#536078', // Background color on hover
+                                color: 'white', // Text color on hover
+                                borderColor: '#536078', // Outline color on hover
+                            },
+                            '&.Mui-disabled': {
+                                color: '#b4b9bf', // Text color when disabled
+                                borderColor: '#2f3338', // Outline color when disabled
+                                backgroundColor: '#2f3338', // Background color when disabled
+                            },
+
+                        }}
+                    >
+
                         Previous
                     </Button>
-                    <Button onClick={nextSlide} disabled={currentSlide === newArray.length - 1}>
+                    <Button
+                        variant="outlined"
+                        onClick={nextSlide}
+                        disabled={currentSlide === newArray.length - 1}
+                        sx={{
+
+                            color: 'white', // Text color
+                            borderColor: '#2e343d', // Outline color
+                            backgroundColor: '#161a1f', // Background color
+                            '&:hover': {
+                                backgroundColor: '#536078', // Background color on hover
+                                color: 'white', // Text color on hover
+                                borderColor: '#536078', // Outline color on hover
+                            },
+                            '&.Mui-disabled': {
+                                color: '#b4b9bf', // Text color when disabled
+                                borderColor: '#2f3338', // Outline color when disabled
+                                backgroundColor: '#2f3338', // Background color when disabled
+                            },
+
+                        }}
+                    >
                         Next
                     </Button>
                 </Typography>
                 {currentSlide + 1 === newArray.length && (
-                    <Button onClick={onSubmit} variant="contained" color="success" style={{
-                        display: 'block',
-                        margin: 'auto', marginTop: '25px'
-                    }}>
+                    <Button
+                        onClick={onSubmit}
+                        variant="contained"
+
+                        sx={{
+                            color: 'black', // Text color
+                            // borderColor: '#2e343d', // Outline color
+                            backgroundColor: '#ffffff', // Background color
+                            '&:hover': {
+                                backgroundColor: '#bbc0c7', // Background color on hover
+                                color: 'black', // Text color on hover
+                                // borderColor: '#536078', // Outline color on hover
+                            },
+
+                        }}
+                    >
                         Submit
                     </Button>
                 )}
                 {/* Notification component */}
                 {showNotification && (
-
-                    <Alert severity="success" onClose={() => {
-                        setShowNotification(false);
-                        navigate('/Home');
-                    }}>
-                        Congrats, your workout for today is completed and saved. See you Tomorrow !!
+                    <Alert
+                        severity="success"
+                        sx={{ color: '#81c784', bgcolor: '#1b5e20' }}
+                        onClose={() => {
+                            setShowNotification(false);
+                            navigate('/Home');
+                        }}
+                    >
+                        Congrats, your workout for today is completed and saved. See you Tomorrow!!
                     </Alert>
                 )}
             </Box>
         </div>
-    )
+    );
 }
