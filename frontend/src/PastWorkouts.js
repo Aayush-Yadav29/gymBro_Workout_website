@@ -54,7 +54,7 @@ export const PastWorkouts = () => {
           throw new Error('Network response was not ok');
         }
         const result = await response.json();
-        console.log(result);
+        // console.log(result);
         setallWorkouts(result);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -64,55 +64,97 @@ export const PastWorkouts = () => {
     fetchData();
   }, []);
   return (
-    <div>
-      <Box component="section" sx={{ p: 2, marginTop: 3, marginRight: 3, marginLeft: 3 }}>
-        PastWorkouts
-        <Box component="section" sx={{ p: 2, marginRight: 2, marginLeft: 2 }}>
-          {allWorkouts.map((obj) => (
-            <Accordion >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1-content"
-                id="panel1-header"
-              >
-                <Typography>
-                  <Box component="span" mb={0} mr={7}>
-                    {formatDate(obj.createdAt)}
-                  </Box>
-                  {obj.title}
+    // <div>
+            <Box
+                component="section"
+                sx={{
+                  p: 4,
+                  paddingTop:10,
+                    bgcolor: '#000000', // Dark background for the main section
+                    color: '#ffffff', // Light text color
+                    height: 'auto',         // Allows height to expand based on content
+                    minHeight: '100vh',     // Ensures minimum height is the full viewport height
+                    minWidth: '100vw',   
+                }}
+            >
+                <Typography variant="h5" sx={{ mb: 2 }}>
+                    Your Workout History
                 </Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <TableContainer component={Paper}>
-                <Table sx={{width: '80%'}} aria-label="simple table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell align="center">Exercises</TableCell>
-                            <TableCell align="center">Sets</TableCell>
-                            <TableCell align="center">Reps</TableCell>
-                            <TableCell align="center">Weight</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {obj.workoutData.map((row) => (
-                            <TableRow
-                                key={row.name} // Make sure to use a unique key
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                <Box
+                    component="section"
+                    sx={{
+                        p: 2,
+                        display: 'flex',
+                        flexDirection:'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        
+                    }}
+                >
+                    {allWorkouts.map((obj) => (
+                        <Accordion
+                            key={obj.createdAt} // Using createdAt as a key (ensure it is unique)
+                            sx={{
+                                bgcolor: '#232b33', // Dark background for the accordion
+                                color: '#ffffff', // Light text color for the accordion
+                                borderRadius: 2,
+                                marginBottom:1,
+                                width:'90%',
+
+                            }}
+                        >
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon sx={{ color: '#ffffff' }} />} // Light color for the expand icon
+                                aria-controls="panel1-content"
+                                id={`panel1-header-${obj.createdAt}`} // Unique id for each accordion
                             >
-                                <TableCell align="center">{row.exercise}</TableCell>
-                                <TableCell align="center">{row.sets}</TableCell>
-                                <TableCell align="center">{row.reps}</TableCell>
-                                <TableCell align="center">{row.weight}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-              </AccordionDetails>
-            </Accordion>
-          ))}
-        </Box>
-      </Box>
-    </div>
+                                <Typography>
+                                    <Box component="span" mb={0} mr={7}>
+                                        {formatDate(obj.createdAt)}
+                                    </Box>
+                                    {obj.title}
+                                </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails
+                                sx={{
+                                    bgcolor: '#232b33', // Slightly lighter dark background for details
+                                    color: '#ffffff', // Light text color for the details
+                                }}
+                            >
+                                <TableContainer component={Paper} sx={{ maxwidth: '100px', bgcolor: '#3b4754' }}>
+                                    <Table sx={{ bgcolor: '#3b4754'}} aria-label="simple table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell align="center" sx={{ color: '#ffffff' }}>Exercises</TableCell>
+                                                <TableCell align="center" sx={{ color: '#ffffff' }}>Sets</TableCell>
+                                                <TableCell align="center" sx={{ color: '#ffffff' }}>Reps</TableCell>
+                                                <TableCell align="center" sx={{ color: '#ffffff' }}>Weight</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {obj.workoutData.map((row) => (
+                                                <TableRow
+                                                    key={row.name} // Ensure unique key for each row
+                                                    sx={{
+                                                        '&:last-child td, &:last-child th': { border: 0 },
+                                                        bgcolor: '#3b4754', // Darker background for table rows
+                                                        color: '#ffffff', // Light text color for table cells
+                                                    }}
+                                                >
+                                                    <TableCell align="center"  sx = {{color: '#ffffff'}}>{row.exercise}</TableCell>
+                                                    <TableCell align="center" sx = {{color: '#ffffff'}}>{row.sets}</TableCell>
+                                                    <TableCell align="center" sx = {{color: '#ffffff'}}>{row.reps}</TableCell>
+                                                    <TableCell align="center" sx = {{color: '#ffffff'}}>{row.weight}</TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </AccordionDetails>
+                        </Accordion>
+                    ))}
+                </Box>
+            </Box>
+        // </div>
   )
 }
