@@ -45,7 +45,8 @@ function ResponsiveAppBar() {
     };
 
     return (
-        <AppBar position="static">
+        <div style={{ position: 'absolute', top:'0', width:'100%'}}>
+        <AppBar position="" style={{ backgroundColor: 'transparent', boxShadow: 'none',marginBottom:'15px' }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Typography
@@ -188,6 +189,7 @@ function ResponsiveAppBar() {
                 </Toolbar>
             </Container>
         </AppBar>
+        </div>
     );
 }
 export default ResponsiveAppBar;
