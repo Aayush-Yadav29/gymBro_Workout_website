@@ -19,13 +19,14 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Navbar />
+      <Navbar />
         <Routes>
           <Route
             path="/"
             element={token   ? <Navigate to="/Home" /> : <SignUp />}
           />
           <Route
+            
             path="/Login"
             element={token ? <Navigate to="/Home" /> : <Login />}
           />
