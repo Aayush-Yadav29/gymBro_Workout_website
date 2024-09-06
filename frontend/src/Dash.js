@@ -40,86 +40,108 @@ export default function Dash() {
     };
   }, []);
   if (loading) {
-    return <CircularProgress variant="determinate" value={progress} />
+    return <CircularProgress v  ariant="determinate" value={progress} />
   }
 
   return (
 
-    <div className="graphhdiv">
+    <div className=" bg-black text-white py-20">
       {/* {console.log("allWorkouts", allWorkouts)} */}
       {/* {console.log("arrPR", arrPR)} */}
-      
-      <div className="dataCard customerCard">
-        <Bar
-          data={{
-            labels: arrPR.map((data) => data.label),
-            datasets: [
-              {
-                label: "", // Provide an empty string for the label
-                data: arrPR.map((data) => data.value),
-                backgroundColor: [
-                  "rgba(43, 63, 229, 0.8)",
-                  "rgba(250, 192, 19, 0.8)",
-                  "rgba(253, 135, 135, 0.8)",
-                  "#179c43",
-                  "#07e2ed",
-                  "#e88905",
-                ],
-                borderRadius: 5,
+      <div className="firstgraph">
+        <div className="child bg-gray-900 text-white p-5">
+          <Bar
+            data={{
+              labels: arrPR.map((data) => data.label),
+              datasets: [
+                {
+                  label: "", // Provide an empty string for the label
+                  data: arrPR.map((data) => data.value),
+                  backgroundColor: [
+                    "rgba(43, 63, 229, 0.8)",
+                    "rgba(250, 192, 19, 0.8)",
+                    "rgba(253, 135, 135, 0.8)",
+                    "#179c43",
+                    "#07e2ed",
+                    "#e88905",
+                  ],
+                  borderRadius: 5,
+                },
+              ],
+            }}
+            options={{
+              plugins: {
+                title: {
+                  display: true,
+                  text: "Personal Records",
+                  color: "white",
+                },
+                legend: {
+                  display: false, // Hide legend if no label is provided
+                },
               },
-            ],
-          }}
-          options={{
-            plugins: {
-              title: {
-                display: true,
-                text: "Personal Records",
+              scales: {
+                x: {
+                  ticks: {
+                    color: "white", // Set X-axis labels to white
+                  },
+                  grid: {
+                    color: "rgba(255, 255, 255, 0.2)", // Set X-axis grid lines to white (adjust transparency)
+                  },
+                },
+                y: {
+                  ticks: {
+                    color: "white", // Set Y-axis labels to white
+                  },
+                  grid: {
+                    color: "rgba(255, 255, 255, 0.2)", // Set Y-axis grid lines to white
+                  },
+                },
               },
-              legend: {
-                display: false, // Hide legend if no label is provided
+            }}
+          />
+        </div>
+
+        <div className="child bg-gray-900 text-white p-5">
+          <Doughnut
+            data={{
+              labels: distrArr.map((data) => data.label),
+              datasets: [
+                {
+                  label: "Count",
+                  data: distrArr.map((data) => data.value),
+                  backgroundColor: [
+                    "rgba(43, 63, 229, 0.8)",
+                    "rgba(250, 192, 19, 0.8)",
+                    "rgba(253, 135, 135, 0.8)",
+                    "#179c43",
+                    "#07e2ed",
+                    "#e88905",
+                  ],
+                  borderColor: [
+                    "rgba(43, 63, 229, 0.8)",
+                    "rgba(250, 192, 19, 0.8)",
+                    "rgba(253, 135, 135, 0.8)",
+                    "#179c43",
+                    "#07e2ed",
+                    "#e88905",
+                  ],
+                },
+              ],
+            }}
+            options={{
+              plugins: {
+                title: {
+                  text: "Muscle-wise Distribution",
+                  color: "white",
+                },
               },
-            },
-          }}
-        />
+            }}
+          />
+        </div>
       </div>
 
-      <div className="dataCard categoryCard">
-        <Doughnut
-          data={{
-            labels: distrArr.map((data) => data.label),
-            datasets: [
-              {
-                label: "Count",
-                data: distrArr.map((data) => data.value),
-                backgroundColor: [
-                  "rgba(43, 63, 229, 0.8)",
-                  "rgba(250, 192, 19, 0.8)",
-                  "rgba(253, 135, 135, 0.8)",
-                  "#179c43",
-                  "#07e2ed",
-                  "#e88905",
-                ],
-                borderColor: [
-                  "rgba(43, 63, 229, 0.8)",
-                  "rgba(250, 192, 19, 0.8)",
-                  "rgba(253, 135, 135, 0.8)",
-                  "#179c43",
-                  "#07e2ed",
-                  "#e88905",
-                ],
-              },
-            ],
-          }}
-          options={{
-            plugins: {
-              title: {
-                text: "Muscle-wise Distribution",
-              },
-            },
-          }}
-        />
-      </div>
-      <div className="dataCard revenueCard">
+      <div className="child bg-gray-900 text-white m-8 p-5">
         <Line
           data={{
             labels: allWorkouts.map((data) => formatDate(data.label)),
@@ -156,6 +178,25 @@ export default function Dash() {
             plugins: {
               title: {
                 text: "Growth",
+                color: "white",
+              },
+            },
+            scales: {
+              x: {
+                ticks: {
+                  color: "white", // Set X-axis labels to white
+                },
+                grid: {
+                  color: "rgba(255, 255, 255, 0.2)", // Set X-axis grid lines to white (adjust transparency)
+                },
+              },
+              y: {
+                ticks: {
+                  color: "white", // Set Y-axis labels to white
+                },
+                grid: {
+                  color: "rgba(255, 255, 255, 0.2)", // Set Y-axis grid lines to white
+                },
               },
             },
           }}

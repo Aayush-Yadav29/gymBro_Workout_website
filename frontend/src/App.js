@@ -45,7 +45,7 @@ function App() {
           />        
           <Route
             path="/Dashboard"
-            element = {<Dash/>}
+            element = {token ? <Dash/>: <Navigate to="/Login" />}
           />
           <Route
             path="/Home/:id"
