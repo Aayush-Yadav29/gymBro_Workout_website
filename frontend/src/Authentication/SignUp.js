@@ -6,6 +6,8 @@ import { NavLink } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useSelector } from 'react-redux';
 import {CircularProgress } from '@mui/material';
+import { loginUser } from '../Redux/AuthSlice';
+
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +15,25 @@ const SignUp = () => {
   const [usedEmail, setusedEmail] = useState(false);
   const [incompleteData, setIncompleteData] = useState(false);
   const isLoading = useSelector((state)=>{return state.user.isLoading});
+  const textFieldStyle = {
+    input: { color: '#ffffff' }, // Input text color
+    label: { color: '#ffffff' }, // Label text color
+    InputLabelProps: { color: '#ffffff' },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        // background: '#161a1f',
+        borderColor: '#2e343d', // Default border color
+      },
 
+      '&.Mui-focused fieldset': {
+        borderColor: '#ffffff', // Border color when focused
+        label: { color: '#ffffff' }, // Label text color
+      },
+      '&:hover fieldset': {
+        borderColor: '#ffffff', // Border color on hover
+      },
+    },
+  }
   
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -61,32 +81,46 @@ const SignUp = () => {
     } 
     return null;
   };
-
+  const enterAsGuest = ()=>{
+    console.log("entering as guest");
+    var email = process.env.REACT_APP_GUEST_EMAIL
+    var password = process.env.REACT_APP_GUEST_PWD
+    dispatch(loginUser({ email, password }))
+  }
+  if (isLoading) {
+    return <Box
+      sx={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        bgcolor: 'black',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div className="flex justify-center items-center py-20">
+        {/* {console.log("loader : ", isloading)} */}
+        <span class="loader"></span>
+      </div>
+    </Box>
+  }
   return (
-    <Container maxWidth="xs" sx={{ position: 'relative' }}>
-      {/* Loader Overlay */}
-      {isLoading && (
-        <Box
-          sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'rgba(255, 255, 255, 0.8)', // Semi-transparent background
-            zIndex: 10, // Ensures the loader is on top
-          }}
-        >
-          <CircularProgress />
-        </Box>
-      )}
+    <div className='flex flex-col items-center justify-center bg-gray-950 text-white h-screen'>
+    <Container className='p-8 text-white m-5' maxWidth="xs" sx={{
+        // position: 'relative',  
+        backgroundColor: '#0e0d21',
+        border: '2px solid',
+        borderColor: '#2e343d',
+        borderRadius: '12px',
+        // marginLeft:"5px",
+        // marginRight:"5px",
+      }}>
       {/* Form Content */}
       <Box
         sx={{
-          marginTop: 8,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -110,6 +144,8 @@ const SignUp = () => {
             autoFocus
             value={email}
             onChange={handleEmailChange}
+            InputLabelProps={{ style: { color: '#ffffff' } }}
+              sx={textFieldStyle}
           />
           <TextField
             margin="normal"
@@ -122,22 +158,52 @@ const SignUp = () => {
             autoComplete="current-password"
             value={password}
             onChange={handlePasswordChange}
+            InputLabelProps={{ style: { color: '#ffffff' } }}
+              sx={textFieldStyle}
           />
           {renderErrorAlert()}
           <Button
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{
+              mt: 2,
+              backgroundColor: 'white', // Initial background color
+              color: 'black', // Initial text color
+              '&:hover': {
+                backgroundColor: '#b6b8b6',
+                  color: 'black',
+              },
+            }}
           >
             Sign Up
           </Button>
-          <Typography variant="body2" color="text.secondary" align="center">
+          <Button
+            // type="submit"
+            onClick={enterAsGuest}
+            fullWidth
+            variant="contained"
+            sx={{
+              mt: 2,
+              mb:2,
+              backgroundColor: 'white', // Initial background color
+              color: 'black', // Initial text color
+              '&:hover': {
+                backgroundColor: '#b6b8b6',
+                  color: 'black',
+              },
+            }}
+            disabled={isLoading} // Optionally disable button while loading
+          >
+            Enter as guest
+          </Button>
+          <Typography className='text-white' variant="body2" align="center">
             Already have an account? <NavLink to="/Login">Sign in here</NavLink>
           </Typography>
         </Box>
       </Box>
     </Container>
+    </div>
   );
 };
 

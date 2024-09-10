@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useSelector } from 'react-redux';
-import {CircularProgress } from '@mui/material';
+import { CircularProgress } from '@mui/material';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,9 +13,27 @@ const Login = () => {
   const [incorrectEmail, setIncorrectEmail] = useState(false);
   const [incompleteData, setIncompleteData] = useState(false);
   const dispatch = useDispatch();
-  const isLoading = useSelector((state)=>{return state.user.isLoading});
+  const isLoading = useSelector((state) => { return state.user.isLoading });
 
+  const textFieldStyle = {
+    input: { color: '#ffffff' }, // Input text color
+    label: { color: '#ffffff' }, // Label text color
+    InputLabelProps: { color: '#ffffff' },
+    '& .MuiOutlinedInput-root': {
+      '& fieldset': {
+        // background: '#161a1f',
+        borderColor: '#2e343d', // Default border color
+      },
 
+      '&.Mui-focused fieldset': {
+        borderColor: '#ffffff', // Border color when focused
+        label: { color: '#ffffff' }, // Label text color
+      },
+      '&:hover fieldset': {
+        borderColor: '#ffffff', // Border color on hover
+      },
+    },
+  }
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
@@ -48,7 +66,7 @@ const Login = () => {
           } else if (msg === 'Incorrect email') {
             setIncorrectEmail(true);
           }
-          else if(msg == 'valid'){
+          else if (msg == 'valid') {
             console.log("valid login");
             // navigate('/Home');
             // window.location.reload();
@@ -71,83 +89,131 @@ const Login = () => {
     return null;
   };
 
+  const enterAsGuest = () => {
+    console.log("entering as guest");
+    var email = process.env.REACT_APP_GUEST_EMAIL
+    var password = process.env.REACT_APP_GUEST_PWD
+    dispatch(loginUser({ email, password }))
+  }
+
+  if (isLoading) {
+    return <Box
+      sx={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        bgcolor: 'black',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <div className="flex justify-center items-center py-20">
+        {/* {console.log("loader : ", isloading)} */}
+        <span class="loader"></span>
+      </div>
+    </Box>
+  }
+
   return (
-    <Container maxWidth="xs" sx={{ position: 'relative' }}>
-      {/* Loader Overlay */}
-      {isLoading && (
-        <Box
+    <div className='flex flex-col items-center justify-center bg-gray-950 text-white h-screen'>
+      <Container className='p-8 text-white m-5' maxWidth="xs" sx={{
+        // position: 'relative',  
+        backgroundColor: '#0e0d21',
+        border: '2px solid',
+        borderColor: '#2e343d',
+        borderRadius: '12px',
+
+      }}>
+        {/* Form Content */}
+        <Box className=""
           sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
+            // marginTop: 8,
             display: 'flex',
-            justifyContent: 'center',
+            flexDirection: 'column',
             alignItems: 'center',
-            backgroundColor: 'rgba(255, 255, 255, 0.8)', // Semi-transparent background
-            zIndex: 10, // Ensures the loader is on top
           }}
         >
-          <CircularProgress />
-        </Box>
-      )}
-      {/* Form Content */}
-      <Box
-        sx={{
-          marginTop: 8,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Log In
-        </Typography>
-        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            value={email}
-            onChange={handleEmailChange}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-          {renderErrorAlert()}
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            disabled={isLoading} // Optionally disable button while loading
-          >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
             Log In
-          </Button>
-          <Typography variant="body2" color="text.secondary" align="center">
-            Don't have an account? <NavLink to="/" variant="body2">Sign Up here</NavLink>
           </Typography>
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={email}
+              onChange={handleEmailChange}
+              InputLabelProps={{ style: { color: '#ffffff' } }}
+              sx={textFieldStyle}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={handlePasswordChange}
+              InputLabelProps={{ style: { color: '#ffffff' } }}
+              sx={textFieldStyle}
+            />
+            {renderErrorAlert()}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 2,
+                backgroundColor: 'white', // Initial background color
+                color: 'black', // Initial text color
+                '&:hover': {
+                  backgroundColor: '#b6b8b6',
+                  color: 'black',
+                },
+              }}
+              onClick={handleSubmit}
+            >
+              Log In
+            </Button>
+            <Button
+              // type="submit"
+              onClick={enterAsGuest}
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 2,
+                mb: 2,
+                backgroundColor: 'white', // Initial background color
+                color: 'black', // Initial text color
+                '&:hover': {
+                  backgroundColor: '#b6b8b6',
+                  color: 'black',
+                },
+              }}
+            >
+              Enter as guest
+            </Button>
+            <Typography className='text-white' variant="body2" align="center">
+              Don't have an account? <NavLink to="/" variant="body2">Sign Up here</NavLink>
+            </Typography>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </div>
   );
 };
 
