@@ -1,18 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
-  Typography,
-  Box,
-  CircularProgress,
-} from '@mui/material';
+import { Box } from '@mui/material';
 
 export const TodayWorkout = () => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -48,8 +36,23 @@ export const TodayWorkout = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
-        <CircularProgress />
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          bgcolor: 'black',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <div className="flex justify-center items-center py-20">
+          {/* {console.log("loader : ", isloading)} */}
+          <span class="loader"></span>
+        </div>
       </Box>
     );
   }
@@ -79,15 +82,15 @@ export const TodayWorkout = () => {
                 </tr>
               ))}
 
-              
+
             </tbody>
           </table>
         </div>
         <div className="flex justify-center">
-        <Link to={`/Home/TodayWorkout/${id}`} style={{ textDecoration: 'none' }}>
-          <button class="bg-gray-900 border-2 border-gray-800 text-white hover:bg-white hover:text-black hover:border-2 hover:border-gray-800 font-medium py-2 px-4 rounded">
-            Start Workout</button>
-            </Link>
+          <Link to={`/Home/TodayWorkout/${id}`} style={{ textDecoration: 'none' }}>
+            <button class="bg-gray-900 border-2 border-gray-800 text-white hover:bg-white hover:text-black hover:border-2 hover:border-gray-800 font-medium py-2 px-4 rounded">
+              Start Workout</button>
+          </Link>
         </div>
       </div>
     </div>
