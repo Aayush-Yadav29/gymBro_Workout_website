@@ -108,8 +108,8 @@ const SignUp = () => {
     </Box>
   }
   return (
-    <div className='flex flex-col items-center justify-center bg-gray-950 text-white h-screen'>
-    <Container className='p-8 text-white m-5' maxWidth="xs" sx={{
+    <div className='flex flex-col items-center justify-center bg-gray-950 text-white h-screen px-4'>
+    <Container className='p-5 text-white m-5' maxWidth="xs" sx={{
         // position: 'relative',  
         backgroundColor: '#0e0d21',
         border: '2px solid',

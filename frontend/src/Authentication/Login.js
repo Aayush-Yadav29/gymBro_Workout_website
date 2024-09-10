@@ -110,16 +110,18 @@ const Login = () => {
         justifyContent: 'center',
       }}
     >
-      <div className="flex justify-center items-center py-20">
+      <div className="flex flex-col justify-center items-center py-20 px-5 text-white">
         {/* {console.log("loader : ", isloading)} */}
         <span class="loader"></span>
+        <div className='mt-5'>There are no shortcuts—everything is reps, reps, reps. - Arnold Schwarzenegger</div>
+        
       </div>
     </Box>
   }
 
   return (
-    <div className='flex flex-col items-center justify-center bg-gray-950 text-white h-screen'>
-      <Container className='p-8 text-white m-5' maxWidth="xs" sx={{
+    <div className='flex flex-col items-center justify-center bg-gray-950 text-white h-screen px-4'>
+      <Container className='p-5 text-white m-5' maxWidth="xs" sx={{
         // position: 'relative',  
         backgroundColor: '#0e0d21',
         border: '2px solid',

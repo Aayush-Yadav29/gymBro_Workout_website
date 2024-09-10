@@ -206,8 +206,8 @@ export const Home = () => {
       </main>
       <footer className="bg-muted py-6 w-full shrink-0">
         <div className="container flex flex-col items-center justify-between gap-4 px-4 md:px-6 md:flex-row">
-          <p className="text-xs text-muted-foreground">&copy; 2024 Gym Workout. All rights reserved.</p>
-          <nav className="flex gap-4 sm:gap-6">
+          <p className="text-xs text-muted-foreground">&copy; 2024 GymBro. All rights reserved.</p>
+          {/* <nav className="flex gap-4 sm:gap-6">
             <a href="#" className="text-xs hover:underline underline-offset-4" prefetch={false}>
               Terms of Service
             </a>
@@ -217,7 +217,7 @@ export const Home = () => {
             <a href="#" className="text-xs hover:underline underline-offset-4" prefetch={false}>
               Contact
             </a>
-          </nav>
+          </nav> */}
         </div>
       </footer>
     </div>
