@@ -25,7 +25,7 @@ export default function CreateWorkout() {
     InputLabelProps: { color: '#ffffff' },
     '& .MuiOutlinedInput-root': {
       '& fieldset': {
-        background: '#161a1f',
+        // background: '#161a1f',
         borderColor: '#2e343d', // Default border color
       },
 
@@ -108,7 +108,7 @@ export default function CreateWorkout() {
       }}
     >
       <Box display="block" p={2}><Typography variant="h5" sx={{ mb: 2 }}>
-        Create you own workout
+        Create your own customised workout
       </Typography></Box>
 
       <Box>
@@ -214,6 +214,7 @@ export default function CreateWorkout() {
                   color: 'white', // Hover text color
                 },
               }}
+              onClick={handleSubmit}
             >
               Submit
             </Button>

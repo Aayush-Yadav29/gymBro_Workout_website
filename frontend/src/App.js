@@ -8,7 +8,7 @@ import CarouselWorkout from './CarouselWorkout';
 import SignUp from './Authentication/SignUp';
 import Login from './Authentication/Login';
 import { PastWorkouts } from './PastWorkouts';
-import LandingPage from './LandingPage';
+import { useLocation } from 'react-router';
 import {useSelector } from 'react-redux';
 import Dash from './Dash';
 
@@ -16,6 +16,7 @@ import Dash from './Dash';
 function App() {
   const token = useSelector((state)=>{return state.user.token});
   // console.log("token:", token, typeof token);
+  
   return (
     <Router>
       <div className="App">

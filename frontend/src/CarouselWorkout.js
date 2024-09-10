@@ -205,9 +205,23 @@ export default function CarouselWorkout() {
         }
     };
     if (loading) {
-        return (
-            <Box display="flex" justifyContent="center" alignItems="center" minHeight="50vh">
-                <CircularProgress />
+        return (<Box
+                sx={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100vw',
+                    height: '100vh',
+                    bgcolor: 'black',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                }}
+            >
+                <div className="flex justify-center items-center py-20">
+                    {/* {console.log("loader : ", isloading)} */}
+                    <span class="loader"></span>
+                </div>
             </Box>
         );
     }

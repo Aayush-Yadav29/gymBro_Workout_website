@@ -49,6 +49,7 @@ export default function CardDisplay({ Ex_title, Sets, Reps, CardNumber, TotalCar
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        paddingTop: '30px',
       }}
     >
       <Card
