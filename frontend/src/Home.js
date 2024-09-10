@@ -2,6 +2,12 @@ import React from 'react'
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import CircularProgress from '@mui/material/CircularProgress';
+import Accordion from '@mui/material/Accordion';
+import AccordionActions from '@mui/material/AccordionActions';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Typography from '@mui/material/Typography';
 import './style/Home.css';
 
 
@@ -71,9 +77,9 @@ export const Home = () => {
       <header className=" bg-[url('./img/gym_bgm.jpg')] bg-cover bg-center bg-no-repeat  py-8 h-screen">
         <div className="container flex mt-[-50px] h-screen m-auto px-4 md:px-6">
           <div className="m-auto max-w-3xl text-center space-y-4">
-            <h1 className="text-3xl font-bold text-white sm:text-4xl md:text-5xl">Unlock Your Fitness Potential</h1>
-            <p className="text-lg text-white/90 md:text-xl">
-              "The only way to do great work is to love what you do." - Steve Jobs
+            <h1 className="text-3xl font-bold text-white sm:text-4xl md:text-5xl ">Unlock Your Fitness Potential</h1>
+            <p className="text-xl font-bold text-white/90 md:text-xl grandstander">
+              "The real workout starts when you want to stop." - Ronnie Coleman
             </p>
           </div>
         </div>
@@ -88,7 +94,7 @@ export const Home = () => {
                 <p className="text-muted-foreground text-sm">Design your custom workout routine.</p>
               </Link>
             </div>
-      
+
 
 
             <div className="flex flex-col items-center justify-center gap-3 rounded-lg bg-muted p-6 hover:bg-muted/90 transition-colors">
@@ -122,6 +128,37 @@ export const Home = () => {
                     <div className="w-full text-center text-xl p-2 mt-10">No workouts created  :(</div>
                   ) : (
                     allWorkouts.map((obj, index) => (
+                      // <Accordion
+                      //           // key={obj.createdAt} // Using createdAt as a key (ensure it is unique)
+                      //           sx={{
+                      //               bgcolor: '#232b33', // Dark background for the accordion
+                      //               color: '#ffffff', // Light text color for the accordion
+                      //               borderRadius: 2,
+                      //               marginBottom: 1,
+                      //               width: '90%',
+
+                      //           }}
+                      //       >
+                      //           <AccordionSummary
+                      //               expandIcon={<ExpandMoreIcon sx={{ color: '#ffffff' }} />} // Light color for the expand icon
+                      //               aria-controls="panel1-content"
+                      //               // id={`panel1-header-${obj.createdAt}`} // Unique id for each accordion
+                      //           >
+                      //               <Typography>
+                      //                   {/* <Box component="span" mb={0} mr={7}>
+                      //                       {formatDate(obj.createdAt)}
+                      //                   </Box> */}
+                      //                   {obj.title}
+                      //               </Typography>
+                      //           </AccordionSummary>
+                      //           <AccordionDetails
+                      //               sx={{
+                      //                   bgcolor: '#232b33', // Slightly lighter dark background for details
+                      //                   color: '#ffffff', // Light text color for the details
+                      //               }}
+                      //           >
+                      //           </AccordionDetails>
+                            // </Accordion>
                       <div key={obj.id} className="w-full mx-auto bg-gray-800 rounded-lg mb-4">
                         {/* Accordion Header */}
                         <div className="flex items-center justify-between rounded-lg bg-background p-4 sm:p-6">
