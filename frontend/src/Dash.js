@@ -1,7 +1,7 @@
 import React from "react";
 import { Chart as ChartJS, defaults } from "chart.js/auto";
 import { Bar, Doughnut, Line, Area } from "react-chartjs-2";
-import CircularProgress from '@mui/material/CircularProgress';
+import { CircularProgress, Box } from '@mui/material';
 import './style/Dash.css';
 
 
@@ -28,19 +28,26 @@ export default function Dash() {
     const year = date.getUTCFullYear();
     return `${day + 1} ${month} ${year}`;
   }
-  const [progress, setProgress] = React.useState(0);
 
-  React.useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prevProgress) => (prevProgress >= 100 ? 0 : prevProgress + 10));
-    }, 800);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
   if (loading) {
-    return <CircularProgress v  ariant="determinate" value={progress} />
+    return <Box
+    sx={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100vw',
+      height: '100vh',
+      bgcolor: 'black',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
+  >
+     <div className="flex justify-center items-center py-20">
+                        {/* {console.log("loader : ", isloading)} */}
+                        <span class="loader"></span>
+                    </div>
+  </Box>
   }
 
   return (

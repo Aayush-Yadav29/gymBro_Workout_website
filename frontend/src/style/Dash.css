@@ -1,17 +1,3 @@
-.graphhdiv {
-    /* margin-top:5%; */
-    /* margin-bottom: 10%; */
-    /* height: 100vh; */
-    /* width: '100%'; */
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-    align-content: center;
-    gap: 5vw;
-    /* background-color: #ddd; */ 
-  }
   .firstgraph {
     display: flex;
     flex-wrap: wrap; /* Enables wrapping of flex items */
@@ -27,24 +13,23 @@
     border-radius: 0.8em;
     border: 1px solid #4e5a61;
   }
-  /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
-  .dataCard {
-    /* background-color: #efefef; */
-    border-radius: 0.5em;
-    padding: 1em;
-  }
   
-  .revenueCard {
-    width: 92%;
-    height: 20rem;
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #FFF;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
   }
-  
-  .customerCard {
-    width: 40%;
-    height: 20rem;
+
+  @keyframes rotation {
+  0% {
+      transform: rotate(0deg);
   }
-  
-  .categoryCard {
-    width: 40%;
-    height: 20rem;
+  100% {
+      transform: rotate(360deg);
   }
+  } 
