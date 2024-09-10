@@ -1,9 +1,14 @@
 import React from 'react'
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import CircularProgress from '@mui/material/CircularProgress';
+import './style/Home.css';
+
+
 export const Home = () => {
   // State to track which accordion is open
   const [openAccordionIndex, setOpenAccordionIndex] = useState(null);
+  const [isloading, setisloading] = useState(true);
 
   const toggleAccordion = (index) => {
     // Toggle the accordion: if it's open, close it; if it's closed, open it
@@ -14,7 +19,7 @@ export const Home = () => {
   // console.log("baseurl : ",baseUrl);
   const [allWorkouts, setallWorkouts] = React.useState([]);
   const token = localStorage.getItem('token');
-  const handleDelete = (id) =>{
+  const handleDelete = (id) => {
     console.log(id);
     fetch(`${baseUrl}/api/deleteWorkout`, {
       method: 'POST',
@@ -48,8 +53,13 @@ export const Home = () => {
         const result = await response.json();
         // console.log(result);
         setallWorkouts(result);
+
       } catch (error) {
         console.error('Error fetching data:', error);
+      }
+      finally {
+        // console.log("marking true");
+        setisloading(false);
       }
     };
 
@@ -59,23 +69,6 @@ export const Home = () => {
 
     <div className="flex flex-col min-h-[100dvh] bg-black text-white">
       <header className=" bg-[url('./img/gym_bgm.jpg')] bg-cover bg-center bg-no-repeat  py-8 h-screen">
-        {/* <nav className="container px-4 md:px-6 flex items-center justify-between mb-8 ">
-          <a href="#" className="text-white font-bold text-lg" prefetch={false}>
-            gymBro
-          </a>
-          <div className="flex items-center gap-8">
-            <a href="#" className="text-white hover:underline" prefetch={false}>
-              Create Workout
-            </a>
-            <a href="#" className="text-white hover:underline" prefetch={false}>
-              Past Workouts
-            </a>
-            <a href="#" className="text-white hover:underline" prefetch={false}>
-              Dashboard
-            </a>
-
-          </div>
-        </nav> */}
         <div className="container flex mt-[-50px] h-screen m-auto px-4 md:px-6">
           <div className="m-auto max-w-3xl text-center space-y-4">
             <h1 className="text-3xl font-bold text-white sm:text-4xl md:text-5xl">Unlock Your Fitness Potential</h1>
@@ -87,34 +80,31 @@ export const Home = () => {
       </header>
       <main className="flex-1">
         <section className="py-12 md:py-20 lg:py-24">
-          <div className="container grid grid-cols-1 sm:grid-cols-3 gap-6 px-4 md:px-6">
-            <a
-              href="#"
-              className="group flex flex-col items-center justify-center gap-3 rounded-lg bg-muted p-6 hover:bg-muted/90 transition-colors"
-              prefetch={false}
-            >
-              <DumbbellIcon className="h-12 w-12 text-primary" />
-              <h3 className="text-xl font-bold">Create Workout</h3>
-              <p className="text-muted-foreground text-sm">Design your custom workout routine.</p>
-            </a>
-            <a
-              href="#"
-              className="group flex flex-col items-center justify-center gap-3 rounded-lg bg-muted p-6 hover:bg-muted/90 transition-colors"
-              prefetch={false}
-            >
-              <CalendarIcon className="h-12 w-12 text-primary" />
-              <h3 className="text-xl font-bold">Past Workouts</h3>
-              <p className="text-muted-foreground text-sm">Review your previous workout history.</p>
-            </a>
-            <a
-              href="#"
-              className="group flex flex-col items-center justify-center gap-3 rounded-lg bg-muted p-6 hover:bg-muted/90 transition-colors"
-              prefetch={false}
-            >
-              <BarChartIcon className="h-12 w-12 text-primary" />
-              <h3 className="text-xl font-bold">Dashboard</h3>
-              <p className="text-muted-foreground text-sm">Track your fitness progress and goals.</p>
-            </a>
+          <div className=" container text-center grid grid-cols-1 sm:grid-cols-3 gap-6 px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center gap-3 rounded-lg bg-muted p-6 hover:bg-muted/90 transition-colors">
+              <Link to={'/CreateWorkout'} className='flex flex-col items-center gap-1'>
+                <DumbbellIcon className="text-center h-12 w-12" />
+                <h3 className="text-xl font-bold">Create Workout</h3>
+                <p className="text-muted-foreground text-sm">Design your custom workout routine.</p>
+              </Link>
+            </div>
+      
+
+
+            <div className="flex flex-col items-center justify-center gap-3 rounded-lg bg-muted p-6 hover:bg-muted/90 transition-colors">
+              <Link to={'/PastWorkouts'} className='flex flex-col items-center gap-1'>
+                <CalendarIcon className="h-12 w-12 text-primary" />
+                <h3 className="text-xl font-bold">Past Workouts</h3>
+                <p className="text-muted-foreground text-sm">Review your previous workout history.</p>
+              </Link>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-3 rounded-lg bg-muted p-6 hover:bg-muted/90 transition-colors">
+              <Link to={'/Dashboard'} className='flex flex-col items-center gap-1'>
+                <BarChartIcon className="h-12 w-12 text-primary" />
+                <h3 className="text-xl font-bold">Dashboard</h3>
+                <p className="text-muted-foreground text-sm">Track your fitness progress and goals.</p>
+              </Link>
+            </div>
           </div>
         </section>
         <section className="py-12 md:py-20 lg:py-24 bg-muted">
@@ -122,47 +112,56 @@ export const Home = () => {
             <div className="mx-auto max-w-3xl space-y-6">
               <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Your Workouts</h2>
               <div className="grid gap-4  ">
-                {allWorkouts.map((obj, index) => (
-                  <div key={obj.id} className="w-full mx-auto bg-gray-800 rounded-lg mb-4">
-                    {/* Accordion Header */}
-                    <div
-                      className="flex items-center justify-between rounded-lg bg-background p-4 sm:p-6 cursor-pointer"
-                      onClick={() => toggleAccordion(index)} // Pass the index to the toggle function
-                    >
-                      <div className="flex items-center gap-4">
-                        <DumbbellIcon className="h-10 w-10 text-primary" />
-                        <div>
-                          <h3 className="text-lg font-bold">{obj.title}</h3>
-                          <p className="text-muted-foreground text-sm"></p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button className="bg-transparent border-none p-1">
-                          <DropdownIcon className="h-5 w-5" />
-                        </button>
-                        <Link to={`/Home/${obj._id}`}>
-                          <button className="bg-transparent border-none p-1">
-                            <PlayIcon className="h-5 w-5" />
-                          </button>
-                        </Link>
-                        <button className="bg-transparent border-none p-1">
-                          <Trash2Icon className="h-5 w-5" onClick={()=>handleDelete(obj._id)} />
-                        </button>
-                      </div>
-                    </div>
-
-                    {/* Accordion Content */}
-                    {openAccordionIndex === index && ( // Check if this accordion should be open
-                      <div className="p-4 sm:p-6 bg-background border-t border-gray-200">
-                        <p className="text-sm text-muted-foreground">
-                          {obj.exerciseData.map((obj2) => (
-                            <div key={obj2._id}>{obj2.exercise}</div>
-                          ))}
-                        </p>
-                      </div>
-                    )}
+                {isloading ? (
+                  <div className="flex justify-center items-center py-20">
+                    {console.log("loader : ", isloading)}
+                    <span class="loader"></span>
                   </div>
-                ))}
+                ) : (
+                  allWorkouts.length === 0 ? (
+                    <div className="w-full text-center text-xl p-2 mt-10">No workouts created  :(</div>
+                  ) : (
+                    allWorkouts.map((obj, index) => (
+                      <div key={obj.id} className="w-full mx-auto bg-gray-800 rounded-lg mb-4">
+                        {/* Accordion Header */}
+                        <div className="flex items-center justify-between rounded-lg bg-background p-4 sm:p-6">
+
+                          <div className="flex items-center gap-4">
+                            <DumbbellIcon className="h-10 w-10 text-primary" />
+                            <div>
+                              <h3 className="text-lg font-bold">{obj.title}</h3>
+                              <p className="text-muted-foreground text-sm"></p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <button className="bg-transparent border-none p-1" onClick={() => toggleAccordion(index)}>
+                              <DropdownIcon className="h-5 w-5" />
+                            </button>
+                            <Link to={`/Home/${obj._id}`}>
+                              <button className="bg-transparent border-none p-1">
+                                <PlayIcon className="h-5 w-5" />
+                              </button>
+                            </Link>
+                            <button className="bg-transparent border-none p-1">
+                              <Trash2Icon className="h-5 w-5" onClick={() => handleDelete(obj._id)} />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Accordion Content */}
+                        {openAccordionIndex === index && (
+                          <div className="p-4 sm:p-6 bg-background border-t border-gray-200">
+                            <p className="text-sm text-muted-foreground">
+                              {obj.exerciseData.map((obj2) => (
+                                <div key={obj2._id}>{obj2.exercise}</div>
+                              ))}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  ))}
+
               </div>
             </div>
           </div>

@@ -8,7 +8,6 @@ import CarouselWorkout from './CarouselWorkout';
 import SignUp from './Authentication/SignUp';
 import Login from './Authentication/Login';
 import { PastWorkouts } from './PastWorkouts';
-import { useLocation } from 'react-router';
 import {useSelector } from 'react-redux';
 import Dash from './Dash';
 
